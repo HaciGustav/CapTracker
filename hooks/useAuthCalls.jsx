@@ -17,7 +17,7 @@ const useAuthCalls = () => {
   const login = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosPublic.post("account/auth/login/", userInfo);
+      const { data } = await axiosPublic.post("/auth/login", userInfo);
 
       dispatch(loginSuccess(data));
       toastSuccessNotify("Login performed");
@@ -31,7 +31,7 @@ const useAuthCalls = () => {
   const logout = async () => {
     dispatch(fetchStart());
     try {
-      await axiosPublic.post("account/auth/logout/");
+      await axiosPublic.post("/auth/logout");
       dispatch(logoutSuccess());
       toastSuccessNotify("Logout performed");
       navigate("/");
@@ -44,11 +44,13 @@ const useAuthCalls = () => {
   const register = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosPublic.post("account/register/", userInfo);
+      const { data } = await axiosPublic.post("/auth/register", userInfo);
+      console.log(data);
       dispatch(registerSuccess(data));
       toastSuccessNotify("Register performed");
       router.push("/");
     } catch (err) {
+      console.log(err);
       dispatch(fetchFail());
       toastErrorNotify("Register can not be performed");
     }

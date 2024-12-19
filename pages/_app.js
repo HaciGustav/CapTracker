@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
-import { SessionProvider, getSession } from "next-auth/react";
+// import { SessionProvider, getSession } from "next-auth/react";
 import store from "@/redux/app/store";
 import { ToastContainer } from "react-toastify";
 
@@ -96,10 +96,10 @@ export default function App({ Component, pageProps }) {
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     const x = localStorage.getItem("theme");
     setMode(x ? x : "light");
-  }, []); */
+  }, []);
 
   return (
     <Provider store={store}>

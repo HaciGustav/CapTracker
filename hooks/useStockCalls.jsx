@@ -26,7 +26,6 @@ const useStockCalls = () => {
     }
   };
 
-  const getFirms = () => getStockData("firms");
   const getSales = () => getStockData("sales");
   const getCategories = () => getStockData("categories");
   const getBrands = () => getStockData("brands");
@@ -133,7 +132,6 @@ const useStockCalls = () => {
 
   return {
     getStockData,
-    getFirms,
     getSales,
     getCategories,
     getProducts,

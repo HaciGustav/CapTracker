@@ -8,10 +8,11 @@ import RegisterForm, { registerSchema } from "@/components/RegisterForm";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useAuthCalls from "@/hooks/useAuthCalls";
 
 const Register = () => {
   const router = useRouter();
-
+  const { register } = useAuthCalls();
   return (
     <Container maxWidth="lg">
       <Grid
@@ -60,8 +61,9 @@ const Register = () => {
             }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {
-              router.push("/");
-              actions.resetForm();
+              console.log(values);
+              register(values);
+              // actions.resetForm();
               actions.setSubmitting(false);
             }}
             component={(props) => <RegisterForm {...props} />}
