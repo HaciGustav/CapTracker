@@ -30,12 +30,13 @@ import AppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import { blueGrey } from "@mui/material/colors";
+import useAuthCalls from "@/hooks/useAuthCalls";
 
 const drawerWidth = 250;
 
 export default function Layout({ window, children, toggleTheme }) {
   const theme = useTheme();
-
+  const { logout } = useAuthCalls();
   //! const { user } = useSelector((state) => state.settings);
   const user = {};
   const dispatch = useDispatch();
@@ -58,22 +59,6 @@ export default function Layout({ window, children, toggleTheme }) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
-  /*   const getSessionData = async () => {
-    const session = await getSession();
-    const user = session?.user;
-    const credentials = {
-      avatar: user?.avatar,
-      roles: user?.roles,
-      token: user?.token,
-      ...user?.userInfo,
-    };
-    dispatch(setUser({ user: credentials }));
-  }; */
-  const avatar = user.avatar;
-  /*   useEffect(() => {
-    getSessionData();
-  }, []); */
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -99,7 +84,7 @@ export default function Layout({ window, children, toggleTheme }) {
             CapTracker{" "}
           </Typography>
           {user && (
-            <Button color="inherit" onClick={() => router.push("/auth/login")}>
+            <Button color="inherit" onClick={() => logout()}>
               Logout
             </Button>
           )}

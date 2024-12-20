@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import MultiSelect from "@/components/MultiSelect";
 import PurchaseModal from "@/components/modals/PurchaseModal";
 import PurchaseTable from "@/components/tables/PurchasesTable";
+import { getCookie } from "cookies-next";
 
 const Purchases = () => {
   const { purchases } = useSelector((state) => state.stock);
@@ -62,3 +63,18 @@ const Purchases = () => {
 };
 
 export default Purchases;
+export const getServerSideProps = async ({ req, res }) => {
+  const token = await getCookie("token", { req, res, httpOnly: true });
+  console.log({ token });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

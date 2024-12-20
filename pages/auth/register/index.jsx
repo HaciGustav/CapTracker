@@ -59,7 +59,7 @@ const Register = () => {
               email: "",
               password: "",
             }}
-            validationSchema={registerSchema}
+            // validationSchema={registerSchema}
             onSubmit={(values, actions) => {
               console.log(values);
               register(values);

@@ -5,7 +5,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import { indigo, pink, amber } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 
-const KpiCards = () => {
+const DashboardCards = () => {
   const { sales, purchases } = useSelector((state) => state.stock);
 
   // const totalSales = sales
@@ -85,4 +85,4 @@ const KpiCards = () => {
   );
 };
 
-export default KpiCards;
+export default DashboardCards;

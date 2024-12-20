@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ProductModal from "@/components/modals/ProductModal";
 import MultiSelect from "@/components/MultiSelect";
 import ProductsTable from "@/components/tables/ProductsTable";
+import { getCookie } from "cookies-next";
 
 const Products = () => {
   const { products, brands } = useSelector((state) => state.stock);
@@ -52,3 +53,18 @@ const Products = () => {
 };
 
 export default Products;
+export const getServerSideProps = async ({ req, res }) => {
+  const token = await getCookie("token", { req, res, httpOnly: true });
+  console.log({ token });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

@@ -1,8 +1,8 @@
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 import { Box, Typography } from "@mui/material";
-import KpiCards from "@/components/KpiCards";
+import DashboardCards from "@/components/DashboardCards";
 import Charts from "@/components/Charts";
+import { getCookie } from "cookies-next";
 
 export default function Home() {
   return (
@@ -17,30 +17,24 @@ export default function Home() {
         <Typography variant="h4" color="error" mb={4}>
           Dashboard
         </Typography>
-        <KpiCards />
+        <DashboardCards />
         <Charts />
       </Box>
     </>
   );
 }
-// export const getServerSideProps = async (context) => {
-//   const session = await getSession(context);
-
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/auth/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   // console.log(session);
-
-//   let config = {
-//     headers: {
-//       Authorization: "Bearer " + session.user.token,
-//       accept: "*/*",
-//     },
-//   };
-// };
+export const getServerSideProps = async ({ req, res }) => {
+  const token = await getCookie("token", { req, res, httpOnly: true });
+  console.log({ token });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

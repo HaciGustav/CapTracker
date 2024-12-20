@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import BrandCard from "@/components/BrandCard";
 import BrandModal from "@/components/modals/BrandModal";
 import { flexCenter } from "@/styles/globalStyle";
+import { getCookie } from "cookies-next";
 
 const Brands = () => {
   const { brands, loading } = useSelector((state) => state.stock);
@@ -48,3 +49,18 @@ const Brands = () => {
 };
 
 export default Brands;
+export const getServerSideProps = async ({ req, res }) => {
+  const token = await getCookie("token", { req, res, httpOnly: true });
+  console.log({ token });
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

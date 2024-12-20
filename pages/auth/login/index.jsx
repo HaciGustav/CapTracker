@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Login = () => {
-  const router = useRouter();
+  const { login } = useAuthCalls();
   return (
     <Container maxWidth="lg">
       <Grid
@@ -56,8 +56,7 @@ const Login = () => {
             initialValues={{ email: "", password: "" }}
             // validationSchema={loginSchema}
             onSubmit={(values, actions) => {
-              router.push("/");
-              actions.resetForm();
+              login(values);
               actions.setSubmitting(false);
             }}
             component={(props) => <LoginForm {...props} />}
