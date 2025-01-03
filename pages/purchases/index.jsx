@@ -6,14 +6,22 @@ import MultiSelect from "@/components/MultiSelect";
 import PurchaseModal from "@/components/modals/PurchaseModal";
 import PurchaseTable from "@/components/tables/PurchasesTable";
 import { getCookie } from "cookies-next";
+import { getSession } from "next-auth/react";
+import useStockCalls from "@/hooks/useStockCalls";
 
 const Purchases = () => {
   const { purchases } = useSelector((state) => state.stock);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
+  const { getPurchases } = useStockCalls();
+
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
+
+  useEffect(() => {
+    getPurchases();
+  }, []);
 
   return (
     <>
@@ -63,10 +71,9 @@ const Purchases = () => {
 };
 
 export default Purchases;
-export const getServerSideProps = async ({ req, res }) => {
-  const token = await getCookie("token", { req, res, httpOnly: true });
-  console.log({ token });
-  if (!token) {
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -74,7 +81,8 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     };
   }
+
   return {
-    props: {},
+    props: { session },
   };
 };

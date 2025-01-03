@@ -5,11 +5,18 @@ import BrandCard from "@/components/BrandCard";
 import BrandModal from "@/components/modals/BrandModal";
 import { flexCenter } from "@/styles/globalStyle";
 import { getCookie } from "cookies-next";
+import { getSession } from "next-auth/react";
+import useStockCalls from "@/hooks/useStockCalls";
 
 const Brands = () => {
+  const { getBrands } = useStockCalls();
   const { brands, loading } = useSelector((state) => state.stock);
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
+
+  useEffect(() => {
+    getBrands();
+  }, []);
 
   return (
     <Box>
@@ -49,10 +56,10 @@ const Brands = () => {
 };
 
 export default Brands;
-export const getServerSideProps = async ({ req, res }) => {
-  const token = await getCookie("token", { req, res, httpOnly: true });
-  console.log({ token });
-  if (!token) {
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -60,7 +67,8 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     };
   }
+
   return {
-    props: {},
+    props: { session },
   };
 };

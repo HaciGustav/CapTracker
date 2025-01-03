@@ -2,9 +2,17 @@ import Head from "next/head";
 import { Box, Typography } from "@mui/material";
 import DashboardCards from "@/components/DashboardCards";
 import Charts from "@/components/Charts";
-import { getCookie } from "cookies-next";
+import { getSession } from "next-auth/react";
+import { useEffect } from "react";
+import useStockCalls from "@/hooks/useStockCalls";
 
 export default function Home() {
+  const { getTransactionsSummary, getTransactions } = useStockCalls();
+  useEffect(() => {
+    getTransactionsSummary();
+    getTransactions();
+  }, []);
+
   return (
     <>
       <Head>
@@ -23,10 +31,9 @@ export default function Home() {
     </>
   );
 }
-export const getServerSideProps = async ({ req, res }) => {
-  const token = await getCookie("token", { req, res, httpOnly: true });
-  console.log({ token });
-  if (!token) {
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -34,7 +41,8 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     };
   }
+
   return {
-    props: {},
+    props: { session },
   };
 };

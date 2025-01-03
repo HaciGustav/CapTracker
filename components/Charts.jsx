@@ -4,18 +4,17 @@ import { useSelector } from "react-redux";
 import { LineChart } from "@mui/x-charts";
 
 const Charts = () => {
-  const { sales, purchases } = useSelector((state) => state.stock);
+  const { sales, purchases } = useSelector((state) => state.stock.transactions);
 
-  const dataFormatter = (number) =>
-    `$${Intl.NumberFormat("us").format(number).toString()}`;
+  const dateFormatter = (date) => new Date(date).toLocaleDateString("en-GB");
 
   const salesData = sales?.map((item) => ({
-    date: item.createds,
+    date: dateFormatter(item.createdAt),
     sales: Number(item.price_total),
   }));
 
   const purchasesData = purchases?.map((item) => ({
-    date: item.createds,
+    date: dateFormatter(item.createdAt),
     purchases: Number(item.price_total),
   }));
 

@@ -8,9 +8,13 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import StarsIcon from "@mui/icons-material/Stars";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import MoreIcon from "@mui/icons-material/More";
 import { useRouter } from "next/router";
+import MenuListItem from "./MenuListItem";
+import { useSelector } from "react-redux";
 
-const icons = [
+const navigationItems = [
   {
     icon: <DashboardIcon />,
     title: "Dashboard",
@@ -38,33 +42,26 @@ const icons = [
     url: "/products",
   },
 ];
-
-const iconStyle = {
-  color: "#eee",
-  "& .MuiSvgIcon-root": { color: "#eee" },
-  "&:hover": { color: "red" },
-  "&:hover .MuiSvgIcon-root": { color: "red" },
+const navigationAdmin = {
+  title: "Admin Panel",
+  icon: <AdminPanelSettingsIcon />,
+  url: "/admin",
 };
 
-const MenuListItems = () => {
-  const router = useRouter();
+const MenuList = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div>
       <List>
-        {icons?.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton
-              onClick={() => router.push(item.url)}
-              sx={iconStyle}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
+        {navigationItems?.map((item) => (
+          <MenuListItem key={item.url} navigationItem={item} />
         ))}
+        {user?.userRole === 1 && (
+          <MenuListItem navigationItem={navigationAdmin} />
+        )}{" "}
       </List>
     </div>
   );
 };
 
-export default MenuListItems;
+export default MenuList;

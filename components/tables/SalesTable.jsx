@@ -21,12 +21,12 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
   const { sales } = useSelector((state) => state.stock);
 
   const columnObj = {
-    created: 1,
+    createdAt: 1,
     quantity: 1,
     price_total: 1,
     price: 1,
-    product: 1,
-    brand: 1,
+    productId: 1,
+    brandId: 1,
   };
 
   const { sortedData, handleSort, columns } = useSortColumn(sales, columnObj);
@@ -47,8 +47,8 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
                 <Typography variant="body" noWrap>
                   Date
                 </Typography>
-                {columns.created === 1 && <UpgradeIcon />}
-                {columns.created !== 1 && <VerticalAlignBottomIcon />}
+                {columns.createdAt === 1 && <UpgradeIcon />}
+                {columns.createdAt !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">Category</TableCell>
@@ -92,10 +92,10 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
             <TableCell>
               <Box sx={arrowStyle} onClick={() => handleSort("price_total")}>
                 <Typography variant="body" noWrap>
-                  Amount
+                  Total Price
                 </Typography>
-                {columns.amount === 1 && <UpgradeIcon />}
-                {columns.amount !== 1 && <VerticalAlignBottomIcon />}
+                {columns.price_total === 1 && <UpgradeIcon />}
+                {columns.price_total !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">Operation</TableCell>
@@ -111,8 +111,8 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
                 key={item.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{item.createds}</TableCell>
-                <TableCell align="center">{item.category[0].name}</TableCell>
+                <TableCell align="center">{item.createdAt}</TableCell>
+                <TableCell align="center">{item.category}</TableCell>
                 <TableCell align="center">{item.brand}</TableCell>
                 <TableCell align="center">{item.product}</TableCell>
                 <TableCell align="center">{item.quantity}</TableCell>

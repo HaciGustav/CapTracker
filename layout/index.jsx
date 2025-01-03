@@ -1,64 +1,74 @@
-import { useTheme } from "@mui/material/styles";
-//ICONS
 import MenuIcon from "@mui/icons-material/Menu";
-
-//
-//MUI Components
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { Button, Tooltip, Typography } from "@mui/material";
-//
-// From nextJS
-import Link from "next/link";
-import { getSession, signOut } from "next-auth/react";
+import { Typography } from "@mui/material";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/router";
-//
-// From React & Redux
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-//
-// Custom Components
-// import { AppBar, Drawer, DrawerHeader } from "./layout_helpers";
-//import ProfileMenu from "@/components/menus/ProfileMenu";
-import MenuListItems from "@/components/MenuListItems";
-//FROM MUI
+import MenuList from "@/layout/MenuList";
 import { Container } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import { blueGrey } from "@mui/material/colors";
-import useAuthCalls from "@/hooks/useAuthCalls";
+import { setUser } from "@/redux/slices/authSlice";
+import ProfileMenu from "@/components/menus/ProfileMenu";
 
 const drawerWidth = 250;
 
 export default function Layout({ window, children, toggleTheme }) {
-  const theme = useTheme();
-  const { logout } = useAuthCalls();
-  //! const { user } = useSelector((state) => state.settings);
-  const user = {};
-  const dispatch = useDispatch();
-
-  const router = useRouter();
+  const { user } = useSelector((state) => state.auth);
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch = useDispatch();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
-      <MenuListItems />
+      <MenuList />
     </div>
   );
 
+  const getSessionData = async () => {
+    const session = await getSession();
+    const user = session?.user?.user;
+    const credentials = {
+      avatar: user?.avatar,
+      userRole: user?.user_role,
+      token: session?.user?.token,
+      userId: user.id,
+      firstname: user?.firstname,
+      lastname: user?.lastname,
+    };
+    dispatch(setUser({ user: credentials }));
+  };
+
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const userAvatar = user?.avatar;
+
+  const avatar = userAvatar
+    ? userAvatar?.url + "?" + userAvatar?.lastEdited
+    : "/assets/emptyAvatar.jpg";
+
+  useEffect(() => {
+    getSessionData();
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -83,11 +93,38 @@ export default function Layout({ window, children, toggleTheme }) {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             CapTracker{" "}
           </Typography>
-          {user && (
-            <Button color="inherit" onClick={() => logout()}>
-              Logout
-            </Button>
-          )}
+          <div
+            style={{
+              display: "flex",
+              columnGap: "15px",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textTransform: "capitalize",
+                fontSize: "1rem",
+              }}
+            >
+              {`${user?.firstname} ${user?.lastname}`}
+            </Typography>{" "}
+            <Image
+              onClick={handleClick}
+              src={avatar}
+              width={50}
+              height={50}
+              alt="profilePicture"
+              style={{ cursor: "pointer", borderRadius: "50%" }}
+            />
+            <ProfileMenu
+              anchorEl={anchorEl}
+              setAnchorEl={setAnchorEl}
+              toggleTheme={toggleTheme}
+            />
+          </div>
         </Toolbar>
       </AppBar>
       <Box

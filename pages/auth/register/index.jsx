@@ -2,23 +2,40 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import LockIcon from "@mui/icons-material/Lock";
-import { Formik } from "formik";
 import Grid from "@mui/material/Grid";
-import RegisterForm, { registerSchema } from "@/components/RegisterForm";
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useAuthCalls from "@/hooks/useAuthCalls";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 
 const Register = () => {
-  const router = useRouter();
   const { register } = useAuthCalls();
+
+  const [inputVal, setInputVal] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setInputVal({ ...inputVal, [e.target.name]: e.target.value });
+    console.log(inputVal);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    await register(inputVal).finally(() => setIsLoading(false));
+  };
+
   return (
     <Container maxWidth="lg">
       <Grid
         container
         justifyContent="center"
         direction="row-reverse"
+        component={"form"}
+        onSubmit={handleSubmit}
         rowSpacing={{ sm: 3 }}
         sx={{
           height: "100vh",
@@ -51,23 +68,60 @@ const Register = () => {
             Register
           </Typography>
 
-          <Formik
-            initialValues={{
-              username: "",
-              first_name: "",
-              last_name: "",
-              email: "",
-              password: "",
-            }}
-            // validationSchema={registerSchema}
-            onSubmit={(values, actions) => {
-              console.log(values);
-              register(values);
-              // actions.resetForm();
-              actions.setSubmitting(false);
-            }}
-            component={(props) => <RegisterForm {...props} />}
-          ></Formik>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="User Name"
+              name="username"
+              id="userName"
+              type="text"
+              variant="outlined"
+              value={inputVal.username}
+              onChange={handleChange}
+            />
+            <TextField
+              label="First Name"
+              name="firstname"
+              id="firstName"
+              type="text"
+              variant="outlined"
+              value={inputVal.firstname}
+              onChange={handleChange}
+            />
+            <TextField
+              label="Last Name"
+              name="lastname"
+              type="text"
+              variant="outlined"
+              value={inputVal.lastname}
+              onChange={handleChange}
+            />
+            <TextField
+              label="Email"
+              name="email"
+              id="email"
+              type="email"
+              variant="outlined"
+              value={inputVal.email}
+              onChange={handleChange}
+            />
+            <TextField
+              label="Password"
+              name="password"
+              id="password"
+              type="password"
+              variant="outlined"
+              value={inputVal.password}
+              onChange={handleChange}
+            />
+            <LoadingButton
+              loading={isLoading}
+              loadingPosition="center"
+              variant="contained"
+              type="submit"
+            >
+              Submit
+            </LoadingButton>
+          </Box>
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link href={"/auth/login"}>Do you have an account?</Link>
           </Box>

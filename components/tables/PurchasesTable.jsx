@@ -26,10 +26,10 @@ const PurchasesTable = ({
   const { purchases } = useSelector((state) => state.stock);
 
   const columnObj = {
-    created: 1,
+    createdAt: 1,
     quantity: 1,
     price_total: 1,
-    firm: 1,
+    category: 1,
     price: 1,
     brand: 1,
     product: 1,
@@ -52,22 +52,22 @@ const PurchasesTable = ({
         <TableHead>
           <TableRow>
             <TableCell>
-              <Box sx={arrowStyle} onClick={() => handleSort("created")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("createdAt")}>
                 <Typography variant="body" noWrap>
                   Date
                 </Typography>
-                {columns.created === 1 && <UpgradeIcon />}
-                {columns.created !== 1 && <VerticalAlignBottomIcon />}
+                {columns.createdAt === 1 && <UpgradeIcon />}
+                {columns.createdAt !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Category</TableCell>
+            {/* <TableCell align="center">Category</TableCell> */}
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("firm")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("category")}>
                 <Typography variant="body" noWrap>
-                  Firm Name
+                  Category
                 </Typography>
-                {columns.firm === 1 && <UpgradeIcon />}
-                {columns.firm !== 1 && <VerticalAlignBottomIcon />}
+                {columns.category === 1 && <UpgradeIcon />}
+                {columns.category !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
@@ -129,14 +129,14 @@ const PurchasesTable = ({
                 key={item.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{item.createds}</TableCell>
-                <TableCell align="center">{item.category[0]?.name}</TableCell>
-                <TableCell align="center">{item.firm}</TableCell>
-                <TableCell align="center">{item.brand}</TableCell>
-                <TableCell align="center">{item.product}</TableCell>
-                <TableCell align="center">{item.quantity}</TableCell>
-                <TableCell align="center">{`$${item.price}`}</TableCell>
-                <TableCell align="center">{`$${item.price_total}`}</TableCell>
+                <TableCell align="center">{item?.createdAt}</TableCell>
+                <TableCell align="center">{item?.category}</TableCell>
+                {/* <TableCell align="center">{"item.firm"}</TableCell> */}
+                <TableCell align="center">{item?.brand}</TableCell>
+                <TableCell align="center">{item?.product}</TableCell>
+                <TableCell align="center">{item?.quantity}</TableCell>
+                <TableCell align="center">{`$${item?.price}`}</TableCell>
+                <TableCell align="center">{`$${item?.price_total}`}</TableCell>
                 <TableCell>
                   <Box sx={flex}>
                     <BorderColorIcon

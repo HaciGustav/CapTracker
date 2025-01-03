@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -18,39 +19,40 @@ model User {
   username     String        @unique
   password     String
   email        String        @unique
-  first_name   String
-  last_name    String
-  is_admin     Boolean       @default(false)
-  is_manager   Boolean       @default(false)
-  is_staff     Boolean       @default(false)
-  is_active    Boolean       @default(false)
+  firstname    String
+  lastname     String
+  user_role    Int           @default(3)
+  avatar       String?
+  is_active    Boolean       @default(true)
   createdAt    DateTime      @default(now())
   transactions Transaction[]
+  logs         Log[]
 }
 
 model Transaction {
-  id               Int     @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   userId           Int
   brandId          Int
   productId        Int
   quantity         Int
-  price            Decimal
-  price_total      Decimal
-  user             User    @relation(fields: [userId], references: [id])
-  brand            Brand   @relation(fields: [brandId], references: [id])
-  product          Product @relation(fields: [productId], references: [id])
+  price            Decimal  @db.Decimal(10, 2)
+  price_total      Decimal  @db.Decimal(10, 2)
   transaction_type Int
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id])
+  brand            Brand    @relation(fields: [brandId], references: [id])
+  product          Product  @relation(fields: [productId], references: [id])
 }
 
 model Product {
   id           Int           @id @default(autoincrement())
   name         String
-  price        Float
+  price        Decimal       @db.Decimal(10, 2)
   stock        Int
   brandId      Int
-  categoryId   Int?
+  categoryId   Int
   brand        Brand         @relation(fields: [brandId], references: [id])
-  category     Category?     @relation(fields: [categoryId], references: [id])
+  category     Category      @relation(fields: [categoryId], references: [id])
   transactions Transaction[]
 }
 
@@ -66,4 +68,14 @@ model Brand {
   image        String?
   products     Product[]
   transactions Transaction[]
+}
+
+model Log {
+  id           Int      @id @default(autoincrement())
+  activityType Int
+  result       Int
+  message      String
+  userId       Int?
+  createdAt    DateTime @default(now())
+  user         User?    @relation(fields: [userId], references: [id])
 }

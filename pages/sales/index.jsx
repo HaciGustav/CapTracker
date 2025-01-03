@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import MultiSelect from "@/components/MultiSelect";
 import SaleModal from "@/components/modals/SaleModal";
 import SalesTable from "@/components/tables/SalesTable";
-import { getCookie } from "cookies-next";
+import { getSession } from "next-auth/react";
+import useStockCalls from "@/hooks/useStockCalls";
 
 const Sales = () => {
+  const { getSales } = useStockCalls();
   const { sales } = useSelector((state) => state.stock);
 
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -15,6 +17,10 @@ const Sales = () => {
 
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
+
+  useEffect(() => {
+    getSales();
+  }, []);
 
   return (
     <>
@@ -63,10 +69,10 @@ const Sales = () => {
 };
 
 export default Sales;
-export const getServerSideProps = async ({ req, res }) => {
-  const token = await getCookie("token", { req, res, httpOnly: true });
-  console.log({ token });
-  if (!token) {
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -74,7 +80,8 @@ export const getServerSideProps = async ({ req, res }) => {
       },
     };
   }
+
   return {
-    props: {},
+    props: { session },
   };
 };

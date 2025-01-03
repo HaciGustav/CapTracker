@@ -5,37 +5,50 @@ import {
   logoutSuccess,
   registerSuccess,
   fetchFail,
-} from "@/features/authSlice";
+} from "@/redux/slices/authSlice";
 import { toastErrorNotify, toastSuccessNotify } from "@/helper/ToastNotify";
 import useAxios from "@/hooks/useAxios";
 import { useRouter } from "next/router";
+import { getSession, signIn, signOut } from "next-auth/react";
 
 const useAuthCalls = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { axiosPublic } = useAxios();
+
   const login = async (userInfo) => {
     dispatch(fetchStart());
-    try {
-      const { data } = await axiosPublic.post("/auth/login", userInfo);
-      dispatch(loginSuccess(data));
-      toastSuccessNotify("Login performed");
-      router.push("/");
-    } catch (err) {
-      console.log(err);
+    const res = await signIn("credentials", {
+      email: userInfo.email,
+      password: userInfo.password,
+      redirect: false,
+    });
+    if (!res.ok) {
       dispatch(fetchFail());
-      toastErrorNotify(err.response.data);
+      toastErrorNotify(res.error);
+      return;
     }
+    const session = await getSession();
+    if (session) {
+      const { user: userInfo } = session?.user;
+      const credentials = {
+        avatar: userInfo?.avatar,
+        userRole: userInfo?.user_role,
+        token: session?.user?.token,
+        ...userInfo,
+      };
+      dispatch(loginSuccess({ user: credentials }));
+    }
+    router.push("/");
   };
 
   const logout = async () => {
     dispatch(fetchStart());
     try {
-      await axiosPublic.post("/auth/logout");
-      dispatch(logoutSuccess());
-      toastSuccessNotify("Logout performed");
-      router.push("/auth/login");
+      await signOut().then(() => dispatch(logoutSuccess()));
+      // router.push("/auth/login");
     } catch (err) {
+      console.log(err);
       dispatch(fetchFail());
       toastErrorNotify("Logout can not be performed");
     }
@@ -44,14 +57,13 @@ const useAuthCalls = () => {
   const register = async (userInfo) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosPublic.post("/auth/register", userInfo);
-      console.log(data);
+      const { data } = await axiosPublic.post("/register", userInfo);
       dispatch(registerSuccess(data));
+      await login(userInfo);
       toastSuccessNotify("Register performed");
-      router.push("/");
     } catch (err) {
-      console.log(err);
       dispatch(fetchFail());
+      console.log(err);
       toastErrorNotify(err.response.data);
     }
   };

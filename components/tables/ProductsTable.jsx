@@ -20,9 +20,11 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
   const { products } = useSelector((state) => state.stock);
 
   const columnObj = {
+    category: 1,
     brand: 1,
     name: 1,
     stock: 1,
+    price: 1,
     id: 1,
   };
 
@@ -51,7 +53,15 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
                 {columns.id !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Category</TableCell>
+            <TableCell align="center">
+              <Box sx={arrowStyle} onClick={() => handleSort("category")}>
+                <Typography variant="body" noWrap>
+                  Category
+                </Typography>
+                {columns.category === 1 && <UpgradeIcon />}
+                {columns.category !== 1 && <VerticalAlignBottomIcon />}
+              </Box>
+            </TableCell>
             <TableCell align="center">
               <Box sx={arrowStyle} onClick={() => handleSort("brand")}>
                 <Typography variant="body" noWrap>
@@ -79,6 +89,15 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
                 {columns.stock !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
+            <TableCell align="center">
+              <Box sx={arrowStyle} onClick={() => handleSort("price")}>
+                <Typography variant="body" noWrap>
+                  Price
+                </Typography>
+                {columns.price === 1 && <UpgradeIcon />}
+                {columns.price !== 1 && <VerticalAlignBottomIcon />}
+              </Box>
+            </TableCell>
             <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
@@ -98,6 +117,7 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
                 <TableCell align="center">{product.brand}</TableCell>
                 <TableCell align="center">{product.name}</TableCell>
                 <TableCell align="center">{product.stock}</TableCell>
+                <TableCell align="center">${product.price}</TableCell>
                 <TableCell align="center">
                   <DeleteForeverIcon sx={btnHoverStyle} />
                 </TableCell>

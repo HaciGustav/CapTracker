@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Layout from "@/layout/Layout";
+import Layout from "@/layout";
 import { useEffect, useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 // import { SessionProvider, getSession } from "next-auth/react";
 import store from "@/redux/app/store";
 import { ToastContainer } from "react-toastify";
+import { SessionProvider } from "next-auth/react";
 
 // import Providers from "@/redux/Provider";
 const Loading = () => <p>LOADING...</p>;
@@ -104,15 +105,15 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        {/* <SessionProvider session={pageProps.session}> */}
-        {router.pathname.includes("auth") && <Component {...pageProps} />}
-        {!router.pathname.includes("auth") && (
-          <Layout toggleTheme={toggleTheme}>
-            <Component {...pageProps} />
-          </Layout>
-        )}
-        <ToastContainer />
-        {/* </SessionProvider> */}
+        <SessionProvider session={pageProps.session}>
+          {router.pathname.includes("auth") && <Component {...pageProps} />}
+          {!router.pathname.includes("auth") && (
+            <Layout toggleTheme={toggleTheme}>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+          <ToastContainer />
+        </SessionProvider>
         <CssBaseline />
       </ThemeProvider>
     </Provider>

@@ -6,41 +6,26 @@ import { indigo, pink, amber } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 
 const DashboardCards = () => {
-  const { sales, purchases } = useSelector((state) => state.stock);
-
-  // const totalSales = sales
-  //   ?.map((sale) => Number(sale.price_total))
-  //   .reduce((acc, val) => acc + val, 0);
-
-  // const totalPurchases = purchases
-  //   ?.map((purchase) => Number(purchase.price_total))
-  //   .reduce((acc, val) => acc + val, 0);
-
-  const total = (data) =>
-    data
-      ?.map((item) => Number(item.price_total))
-      .reduce((acc, val) => acc + val, 0);
-
-  const totalProfit = (total(sales) - total(purchases)).toFixed(2);
+  const { transactionsSummary } = useSelector((state) => state.stock);
 
   const data = [
     {
       title: "sales",
-      metric: `$${total(sales) || ""}`,
+      metric: `$${transactionsSummary?.sales || ""}`,
       icon: <MonetizationOnIcon sx={{ fontSize: "3rem" }} />,
       color: indigo[900],
       bgColor: indigo[100],
     },
     {
       title: "profit",
-      metric: `$${totalProfit || ""}`,
+      metric: `$${transactionsSummary?.profit || ""}`,
       icon: <PaymentsIcon sx={{ fontSize: "3rem" }} />,
       color: pink[900],
       bgColor: pink[100],
     },
     {
       title: "purchases",
-      metric: `$${total(purchases) || ""}`,
+      metric: `$${transactionsSummary?.purchases || ""}`,
       icon: <ShoppingCartIcon sx={{ fontSize: "3rem" }} />,
       color: amber[900],
       bgColor: amber[100],

@@ -1,7 +1,12 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import prisma from "../db";
-import AuthenticationError from "../Utils/AuthenticationError";
+import AuthenticationError from "../utils/AuthenticationError";
+import {
+  loginFailLog,
+  loginSuccessLog,
+  registerSuccessLog,
+} from "../utils/logger/logger";
 
 const JWT_SECRET = process.env.JWT_SECRET || "captracker";
 const JWT_EXPIRATION = "1h"; // Set your desired expiration time for JWT token
@@ -34,16 +39,16 @@ export const register = async (credentials) => {
   const userByUsername = await userExistsByUsername(username);
 
   if (userByEmail) {
-    throw new AuthenticationError(400, "User already exists with given email");
+    registerFailLog(credentials);
+    const message = `User already exists with given email: ${email} `;
+    throw new AuthenticationError(400, message);
   }
 
   if (userByUsername) {
-    throw new AuthenticationError(
-      400,
-      "User already exists with given username"
-    );
+    registerFailLog(credentials);
+    const message = `User already exists with given username: ${username}`;
+    throw new AuthenticationError(400, message);
   }
-
   const hashedPassword = await bcrypt.hash(password, 10);
   try {
     const user = await prisma.user.create({
@@ -54,7 +59,7 @@ export const register = async (credentials) => {
     });
 
     const token = generateToken(user);
-
+    registerSuccessLog();
     return { user, token };
   } catch (error) {
     console.log(error);
@@ -68,15 +73,17 @@ export const login = async (email, password) => {
   });
 
   if (!user) {
+    loginFailLog(email, "User not found");
     throw new AuthenticationError(404, "User not found");
   }
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
   if (!isValidPassword) {
+    loginFailLog(email, "Invalid password");
     throw new AuthenticationError(400, "Invalid password");
   }
   const token = generateToken(user);
-
+  loginSuccessLog(user);
   return { user, token };
 };
