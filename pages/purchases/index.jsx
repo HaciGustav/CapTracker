@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import MultiSelect from "@/components/MultiSelect";
 import PurchaseModal from "@/components/modals/PurchaseModal";
 import PurchaseTable from "@/components/tables/PurchasesTable";
-import { getCookie } from "cookies-next";
 import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
@@ -32,7 +31,11 @@ const Purchases = () => {
         setOpen={setOpen}
       />
 
-      <Typography variant="h4" color="error" mt={4} mb={4}>
+      <Typography variant="h4" color="error" mb={2} 
+        sx={{
+          fontWeight: "bold",
+          textTransform: "uppercase"
+        }}>
         Purchases
       </Typography>
 

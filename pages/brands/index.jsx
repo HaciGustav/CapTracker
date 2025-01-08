@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import BrandCard from "@/components/BrandCard";
 import BrandModal from "@/components/modals/BrandModal";
 import { flexCenter } from "@/styles/globalStyle";
-import { getCookie } from "cookies-next";
 import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
@@ -20,7 +19,11 @@ const Brands = () => {
 
   return (
     <Box>
-      <Typography variant="h4" color="error" mb={2}>
+      <Typography variant="h4" color="error" mb={2} 
+        sx={{
+          fontWeight: "bold",
+          textTransform: "uppercase"
+        }}>
         Brands
       </Typography>
 

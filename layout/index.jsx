@@ -17,7 +17,7 @@ import { blueGrey } from "@mui/material/colors";
 import { setUser } from "@/redux/slices/authSlice";
 import ProfileMenu from "@/components/menus/ProfileMenu";
 
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 export default function Layout({ window, children, toggleTheme }) {
   const { user } = useSelector((state) => state.auth);
@@ -90,8 +90,14 @@ export default function Layout({ window, children, toggleTheme }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            CapTracker{" "}
+          <Typography variant="h5" noWrap component="div"
+            sx={{
+              flexGrow: 1,
+              color: "white", 
+              fontWeight: "bold"
+            }}
+          >
+          CapTracker
           </Typography>
           <div
             style={{
@@ -105,6 +111,7 @@ export default function Layout({ window, children, toggleTheme }) {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                color: "white", 
                 textTransform: "capitalize",
                 fontSize: "1rem",
               }}
@@ -149,7 +156,7 @@ export default function Layout({ window, children, toggleTheme }) {
           }}
           PaperProps={{
             sx: {
-              backgroundColor: blueGrey[900],
+              backgroundColor: "#4C6663",
             },
           }}
         >
@@ -166,25 +173,25 @@ export default function Layout({ window, children, toggleTheme }) {
           }}
           PaperProps={{
             sx: {
-              backgroundColor: blueGrey[900],
+              backgroundColor: "#4C6663",
             },
           }}
-          open
         >
           {drawer}
         </Drawer>
       </Box>
-      <Container
+      <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          
         }}
       >
         <Toolbar />
         {children}
-      </Container>
+      </Box>
     </Box>
   );
 }

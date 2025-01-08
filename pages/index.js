@@ -22,7 +22,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box>
-        <Typography variant="h4" color="error" mb={4}>
+        <Typography variant="h4" color="error" mb={2} 
+          sx={{
+            fontWeight: "bold",
+            textTransform: "uppercase"
+          }}>
           Dashboard
         </Typography>
         <DashboardCards />

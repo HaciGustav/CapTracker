@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import ProductModal from "@/components/modals/ProductModal";
 import MultiSelect from "@/components/MultiSelect";
 import ProductsTable from "@/components/tables/ProductsTable";
-import { getCookie } from "cookies-next";
 import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
@@ -24,7 +23,11 @@ const Products = () => {
 
   return (
     <Box>
-      <Typography variant="h4" color="error" mb={4}>
+      <Typography variant="h4" color="error" mb={2} 
+        sx={{
+          fontWeight: "bold",
+          textTransform: "uppercase"
+        }}>
         Products
       </Typography>
 
