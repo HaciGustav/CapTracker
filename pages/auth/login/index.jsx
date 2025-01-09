@@ -49,8 +49,11 @@ const Login = () => {
           }}
         >
           <Grid item xs={12} mb={3}>
-            <Typography variant="h3" color="primary" align="center">
-              CAPTRACKER
+            <Typography variant="h3" color="primary" align="center"
+              sx={{
+                fontWeight: "bold"
+              }}>
+              CapTracker
             </Typography>
           </Grid>
 
@@ -66,18 +69,22 @@ const Login = () => {
               sx={{
                 backgroundColor: "secondary.light",
                 m: "auto",
-                width: 40,
-                height: 40,
+                width: 60,
+                height: 60,
               }}
             >
               <LockIcon size="30" />
             </Avatar>
             <Typography
-              variant="h4"
+              variant="h3"
               align="center"
+              mt={4}
               mb={4}
               color="secondary.light"
-            >
+              sx={{
+                fontWeight: "bold",
+                textTransform: "uppercase"
+              }}>
               Login
             </Typography>
 
@@ -92,7 +99,7 @@ const Login = () => {
                 onChange={handleChange}
               />
               <TextField
-                label="password"
+                label="Password"
                 name="password"
                 id="password"
                 type="password"
@@ -111,7 +118,7 @@ const Login = () => {
             </Box>
 
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Link href={"/auth/register"}>Don't you have an account?</Link>
+              <Link href={"/auth/register"}>Don't have an account? Register here!</Link>
             </Box>
           </Grid>
 

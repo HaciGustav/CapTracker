@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import Layout from "@/layout";
 import { useEffect, useMemo, useState } from "react";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, colors, createTheme } from "@mui/material";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,33 +23,37 @@ export default function App({ Component, pageProps }) {
     localStorage.setItem("theme", mode === "dark" ? "light" : "dark");
   };
 
-  const getDesignTokens = () => ({
+  const getDesignTokens = (mode) => ({
     palette: {
       mode,
       ...(mode === "light"
         ? {
             // palette values for light mode
-            // primary: { main: "#e10000" },
-            navbar: { main: "#e10000" },
+            primary: { main: "#80CFA9"},
+            secondary: { main: "#FFD1A9"},
+            background: { default: "#FFFFFF"},
+            text: { primary: "#212121"},
+            error: { main: "#E57373" },
+            success: { main: "#66BB6A" },
+            warning: { main: "#FFEE58" },
+            info: { main: "#64B5F6" },
 
-            primary: { main: "#1976D2" },
-            secondary: {
-              main: "#e10000",
-            },
-            error: { main: "#e10000" },
+            navbar: { main: "#e10000" },
             dateInputColor: {
               main: "#000",
             },
           }
         : {
             // palette values for dark mode
-            primary: {
-              main: "#1976D2",
-            },
-            secondary: {
-              main: "#300000",
-            },
-            error: { main: "#e10000" },
+            primary: { main: "#80CFA9"},
+            secondary: { main: "#CC9D7A"},
+            background: { default: "#121212"},
+            text: { primary: "#E0E0E0"},
+            error: { main: "#EF5350" },
+            success: { main: "#81C784" },
+            warning: { main: "#FDD835" },
+            info: { main: "#4FC3F7" },
+
             toggleBtn: { main: "#008000" },
             dateInputColor: {
               main: "#fff",
@@ -67,28 +71,30 @@ export default function App({ Component, pageProps }) {
         },
         styleOverrides: {
           root: {
-            fontSize: "0.7rem",
+            fontSize: "1rem",
           },
         },
       },
       MuiInputBase: {
         styleOverrides: {
           root: {
-            fontSize: "0.7rem",
+            fontSize: "1rem",
           },
         },
       },
       MuiSelect: {
         styleOverrides: {
           root: {
-            fontSize: "0.7rem",
+            fontSize: "1rem",
           },
         },
       },
       MuiButton: {
         styleOverrides: {
           root: {
-            fontSize: "0.7rem",
+            fontSize: "1rem",
+            color: "white",
+            fontWeight: "bold"
           },
         },
       },

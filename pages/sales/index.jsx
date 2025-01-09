@@ -24,7 +24,11 @@ const Sales = () => {
 
   return (
     <>
-      <Typography variant="h4" color="error" mt={4} mb={4}>
+      <Typography variant="h4" color="error" mb={2} 
+        sx={{
+          fontWeight: "bold",
+          textTransform: "uppercase"
+        }}>
         Sales
       </Typography>
       <Button

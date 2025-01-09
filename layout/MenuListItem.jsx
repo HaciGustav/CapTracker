@@ -11,8 +11,8 @@ const MenuListItem = ({ navigationItem }) => {
   const iconStyle = {
     color: "#eee",
     "& .MuiSvgIcon-root": { color: "#eee" },
-    "&:hover": { color: "red" },
-    "&:hover .MuiSvgIcon-root": { color: "red" },
+    "&:hover": { color: "#E57373" },
+    "&:hover .MuiSvgIcon-root": { color: "#E57373" },
   };
 
   const router = useRouter();

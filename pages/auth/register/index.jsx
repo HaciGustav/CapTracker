@@ -43,7 +43,10 @@ const Register = () => {
         }}
       >
         <Grid item xs={12}>
-          <Typography variant="h3" color="primary" align="center">
+          <Typography variant="h3" color="primary" align="center"
+            sx={{
+              fontWeight: "bold"
+            }}>
             CapTracker
           </Typography>
         </Grid>
@@ -53,18 +56,22 @@ const Register = () => {
             sx={{
               backgroundColor: "secondary.light",
               m: "auto",
-              width: 40,
-              height: 40,
+              width: 60,
+              height: 60,
             }}
           >
             <LockIcon size="30" />
           </Avatar>
           <Typography
-            variant="h4"
+            variant="h3"
             align="center"
-            mb={2}
+            mt={4}
+            mb={4}
             color="secondary.light"
-          >
+            sx={{
+              fontWeight: "bold",
+              textTransform: "uppercase"
+            }}>
             Register
           </Typography>
 
@@ -123,7 +130,7 @@ const Register = () => {
             </LoadingButton>
           </Box>
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link href={"/auth/login"}>Do you have an account?</Link>
+            <Link href={"/auth/login"}>Already have an account?</Link>
           </Box>
         </Grid>
 
