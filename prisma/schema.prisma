@@ -51,6 +51,8 @@ model Product {
   stock        Int
   brandId      Int
   categoryId   Int
+  min          Int
+  max          Int
   brand        Brand         @relation(fields: [brandId], references: [id])
   category     Category      @relation(fields: [categoryId], references: [id])
   transactions Transaction[]
