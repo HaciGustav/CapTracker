@@ -7,10 +7,13 @@ import { useEffect } from "react";
 import useStockCalls from "@/hooks/useStockCalls";
 
 export default function Home() {
-  const { getTransactionsSummary, getTransactions } = useStockCalls();
+  const { getTransactions, getCategories, getBrands, getProducts } =
+    useStockCalls();
   useEffect(() => {
-    getTransactionsSummary();
+    getProducts();
     getTransactions();
+    getCategories();
+    getBrands();
   }, []);
 
   return (
@@ -22,11 +25,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box>
-        <Typography variant="h4" color="error" mb={2} 
+        <Typography
+          variant="h4"
+          color="error"
+          mb={2}
           sx={{
             fontWeight: "bold",
-            textTransform: "uppercase"
-          }}>
+            textTransform: "uppercase",
+          }}
+        >
           Dashboard
         </Typography>
         <DashboardCards />

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
 
 const BASE_URL = "/api";
 
@@ -9,7 +9,8 @@ export const axiosPublic = axios.create({
 });
 
 const useAxios = () => {
-  const { token } = useSelector((state) => state.auth);
+  const { data: session } = useSession();
+  const token = session?.user?.token;
 
   //* Axios Instance for Private API Request
   const axiosWithToken = axios.create({

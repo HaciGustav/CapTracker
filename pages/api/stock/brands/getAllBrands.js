@@ -1,6 +1,7 @@
 import { getAllBrands } from "@/server/stock/brandService";
+import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const brands = await getAllBrands();
@@ -13,4 +14,6 @@ export default async function handler(req, res) {
     res.setHeader("Allow", ["GET"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-}
+};
+
+export default withAuth(handler);

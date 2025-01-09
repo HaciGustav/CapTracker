@@ -1,6 +1,7 @@
 import { transactionTypes } from "@/helper/enums";
 import prisma from "../db";
-import StockError from "../utils/StockError";
+import StockError from "../utils/error/StockError";
+import { getProductById, updateProduct } from "./productService";
 
 const transformTransaction = (transaction) => {
   const { product, user, brand } = transaction;
@@ -87,27 +88,19 @@ export const getTotalPurchases = async () => {
   }
 };
 
-const isSale = (transaction_type) => transaction_type === transactionTypes.SALE;
-const isPurchase = (transaction_type) =>
-  transaction_type === transactionTypes.PURCHASE;
 const isSaleValid = (stock, saleAmount) => stock > saleAmount;
 
 export const createTransaction = async (transactionInfo) => {
   const { userId, brandId, productId, quantity, price, transaction_type } =
     transactionInfo;
-
-  //TODO: find user by id and validate
-
-  //TODO: find brand by id and validate
-
-  //TODO: find product by id and validate
-
-  const product = {};
-  if (isSale(transaction_type) && !isSaleValid(product.stock, quantity)) {
-    throw new StockError(400, "Not enough products in stock!");
-  }
-
+  const isSale = transaction_type === transactionTypes.SALE;
   try {
+    const product = await getProductById(productId);
+    console.log({ product });
+    if (isSale && !isSaleValid(product.stock, quantity)) {
+      throw new StockError(400, "Not enough products in stock!");
+    }
+
     const transaction = await prisma.transaction.create({
       data: {
         userId,
@@ -119,6 +112,12 @@ export const createTransaction = async (transactionInfo) => {
         transaction_type,
       },
     });
+    const newProductStock = isSale
+      ? product.stock - quantity
+      : product.stock + quantity;
+
+    await updateProduct({ id: productId, stock: newProductStock });
+
     return transaction;
   } catch (error) {
     console.log(error);
@@ -133,12 +132,48 @@ export const deleteTransaction = async (transactionId) => {
     if (false) {
       throw new StockError(400, "Transaction doesn't exist!");
     }
-    const deleteTransaction = await prisma.transaction.delete({
+    const deleteTransaction = await prisma.transaction.update({
       where: {
-        id: transactionId,
+        id: parseInt(transactionId),
+      },
+      data: {
+        isDeleted: true,
       },
     });
     return deleteTransaction;
+  } catch (error) {
+    console.log(error);
+    throw new StockError(500, "Something went wrong on the server!");
+  }
+};
+
+export const updateTransaction = async (transactionInfo) => {
+  const isSale = transactionInfo.transaction_type === transactionTypes.SALE;
+
+  const priceTotal =
+    transactionInfo.price && transactionInfo.quantity
+      ? transactionInfo.price * transactionInfo.quantity
+      : undefined;
+
+  const updatedTransactionInfo = priceTotal
+    ? { ...transactionInfo, price_total: priceTotal }
+    : transactionInfo;
+
+  try {
+    const updatedTransaction = await prisma.transaction.update({
+      where: { id: parseInt(transactionInfo.id) },
+      data: {
+        ...updatedTransactionInfo,
+      },
+    });
+
+    const newProductStock = isSale
+      ? product.stock - quantity
+      : product.stock + quantity;
+
+    await updateProduct({ id: productId, stock: newProductStock });
+
+    return updatedTransaction;
   } catch (error) {
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");

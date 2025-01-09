@@ -23,11 +23,15 @@ const Products = () => {
 
   return (
     <Box>
-      <Typography variant="h4" color="error" mb={2} 
+      <Typography
+        variant="h4"
+        color="error"
+        mb={2}
         sx={{
           fontWeight: "bold",
-          textTransform: "uppercase"
-        }}>
+          textTransform: "uppercase",
+        }}
+      >
         Products
       </Typography>
 
@@ -54,6 +58,8 @@ const Products = () => {
 
       {products?.length > 0 && (
         <ProductsTable
+          setOpen={setOpen}
+          setInfo={setInfo}
           selectedProducts={selectedProducts}
           selectedBrands={selectedBrands}
         />

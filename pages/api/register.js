@@ -1,10 +1,6 @@
-import {
-  generateToken,
-  register,
-  setTokenCookie,
-} from "@/server/auth/authService";
+import { register } from "@/server/auth/authService";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const credentials = req.body;
@@ -18,4 +14,5 @@ export default async function handler(req, res) {
   } else {
     res.status(405);
   }
-}
+};
+export default handler;

@@ -7,11 +7,11 @@ const stockSlice = createSlice({
     transactions: {
       purchases: [],
       sales: [],
+      summary: {},
     },
     products: [],
     brands: [],
-    firms: null,
-    categories: null,
+    categories: [],
     loading: false,
     error: false,
   },

@@ -2,9 +2,9 @@ import prisma from "../db";
 import StockError from "../utils/error/StockError";
 import { throwErrorOnMissingField } from "../utils/validators";
 
-export const getAllBrands = async () => {
+export const getAllCategories = async () => {
   try {
-    return await prisma.brand.findMany({
+    return await prisma.category.findMany({
       where: {
         isDeleted: false,
       },
@@ -15,52 +15,49 @@ export const getAllBrands = async () => {
   }
 };
 
-export const createBrand = async (brandInfo) => {
+export const createCategory = async (categoryInfo) => {
   const validatingFields = ["name"];
-  throwErrorOnMissingField(validatingFields, brandInfo);
+  throwErrorOnMissingField(validatingFields, categoryInfo);
 
   try {
-    const brand = await prisma.brand.create({
-      data: brandInfo,
+    const category = await prisma.category.create({
+      data: categoryInfo,
     });
-    return brand;
+    return category;
   } catch (error) {
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
 };
 
-export const updateBrand = async (brandInfo) => {
+export const updateCategory = async (categoryInfo) => {
   try {
-    const updatedBrand = await prisma.brand.update({
-      where: { id: parseInt(brandInfo.id) },
+    const category = await prisma.category.update({
+      where: { id: parseInt(categoryInfo.id) },
       data: {
-        ...brandInfo,
+        ...categoryInfo,
       },
     });
-    return updatedBrand;
+    return category;
   } catch (error) {
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
 };
 
-export const deleteBrand = async (brandId) => {
-  //TODO: find brand by id and validate
+export const deleteCategory = async (categoryId) => {
+  //TODO: find category by id and validate
 
   try {
     if (false) {
-      throw new StockError(400, "Brand doesn't exist!");
+      throw new StockError(400, "Category doesn't exist!");
     }
-    const deleteBrand = await prisma.brand.update({
+    await prisma.category.update({
+      data: { isDeleted: true },
       where: {
-        id: parseInt(brandId),
-      },
-      data: {
-        isDeleted: true,
+        id: parseInt(categoryId),
       },
     });
-    return deleteBrand;
   } catch (error) {
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");

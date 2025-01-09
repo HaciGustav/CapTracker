@@ -1,18 +1,24 @@
-import { deleteTransaction } from "@/server/stock/transactionService";
+import { deleteProduct } from "@/server/stock/productService";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
   if (req.method === "DELETE") {
     try {
-      const transactionId = req.query?.id;
-      const transaction = await deleteTransaction(parseInt(transactionId));
+      const productId = req.query?.id;
+      if (!productId) {
+        res.status(400).json("Product ID is required!");
+      }
+
+      await deleteProduct(productId);
+
+      //TODO: Log operation
 
       res.status(200).json({
-        transaction,
-        message: "Transaction has been deleted successfully!",
+        message: "Product has been deleted successfully!",
       });
     } catch (error) {
-      console.log(error);
+      //TODO: Log Error
+      // console.log(error);
       res.status(error.status).json(error.message);
     }
   } else {

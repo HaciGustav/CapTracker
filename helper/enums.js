@@ -10,7 +10,7 @@ export const userRoleTypes = {
 };
 
 export const logActivityTypes = {
-  INVENTORY_CHANGE: 1,
+  STOCK_OPERATION: 1,
   ACCESS_ATTEMPT: 2,
   THRESHOLD_ALERT: 3,
   AUTH_OPERATION: 4,

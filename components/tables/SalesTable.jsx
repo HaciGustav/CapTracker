@@ -36,6 +36,10 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
 
   const isProductSelected = (item) =>
     selectedProducts.includes(item.product) || selectedProducts.length === 0;
+  const formatDateTime = (date) => {
+    return `${new Date(date).toLocaleDateString("tr")}-
+    ${new Date(date).toLocaleTimeString("tr")}`;
+  };
 
   return (
     <TableContainer component={Paper} elevation={10} sx={{ mt: 4 }}>
@@ -111,7 +115,9 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
                 key={item.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{item.createdAt}</TableCell>
+                <TableCell align="center">
+                  {formatDateTime(item?.createdAt)}
+                </TableCell>
                 <TableCell align="center">{item.category}</TableCell>
                 <TableCell align="center">{item.brand}</TableCell>
                 <TableCell align="center">{item.product}</TableCell>

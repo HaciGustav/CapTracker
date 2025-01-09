@@ -19,7 +19,6 @@ const Register = () => {
 
   const handleChange = (e) => {
     setInputVal({ ...inputVal, [e.target.name]: e.target.value });
-    console.log(inputVal);
   };
 
   const handleSubmit = async (e) => {
@@ -43,10 +42,14 @@ const Register = () => {
         }}
       >
         <Grid item xs={12}>
-          <Typography variant="h3" color="primary" align="center"
+          <Typography
+            variant="h3"
+            color="primary"
+            align="center"
             sx={{
-              fontWeight: "bold"
-            }}>
+              fontWeight: "bold",
+            }}
+          >
             CapTracker
           </Typography>
         </Grid>
@@ -70,8 +73,9 @@ const Register = () => {
             color="secondary.light"
             sx={{
               fontWeight: "bold",
-              textTransform: "uppercase"
-            }}>
+              textTransform: "uppercase",
+            }}
+          >
             Register
           </Typography>
 

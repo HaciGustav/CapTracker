@@ -6,8 +6,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { CardHeader } from "@mui/material";
 import { btnHoverStyle, flex } from "../styles/globalStyle";
+import useStockCalls from "@/hooks/useStockCalls";
 
 const BrandCard = ({ brand, setOpen, setInfo }) => {
+  const { deleteBrand } = useStockCalls();
   return (
     <Card
       elevation={10}

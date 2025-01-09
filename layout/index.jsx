@@ -90,14 +90,17 @@ export default function Layout({ window, children, toggleTheme }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5" noWrap component="div"
+          <Typography
+            variant="h5"
+            noWrap
+            component="div"
             sx={{
               flexGrow: 1,
-              color: "white", 
-              fontWeight: "bold"
+              color: "white",
+              fontWeight: "bold",
             }}
           >
-          CapTracker
+            CapTracker
           </Typography>
           <div
             style={{
@@ -111,7 +114,7 @@ export default function Layout({ window, children, toggleTheme }) {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                color: "white", 
+                color: "white",
                 textTransform: "capitalize",
                 fontSize: "1rem",
               }}
@@ -185,8 +188,14 @@ export default function Layout({ window, children, toggleTheme }) {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          
+
+          // width: {
+          //   sm: `calc(80% - ${drawerWidth}px)`,
+          //   // md: `calc(80% - ${drawerWidth}px)`,
+          //   // lg: `calc(80% - ${drawerWidth}px)`,
+          //   // xl: `calc(80% - ${drawerWidth}px)`,
+          // },
+          // width: `calc(100% - ${drawerWidth}px)`,
         }}
       >
         <Toolbar />

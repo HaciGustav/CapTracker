@@ -1,6 +1,6 @@
 import { deleteCookie } from "cookies-next";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const result = await deleteCookie("token", { req, res, httpOnly: true });
@@ -12,4 +12,6 @@ export default async function handler(req, res) {
   } else {
     res.status(405);
   }
-}
+};
+
+export default handler;

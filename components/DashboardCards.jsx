@@ -6,29 +6,29 @@ import { indigo, pink, amber } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 
 const DashboardCards = () => {
-  const { transactionsSummary } = useSelector((state) => state.stock);
+  const { summary } = useSelector((state) => state.stock.transactions);
 
   const data = [
     {
       title: "sales",
-      metric: `$${transactionsSummary?.sales || ""}`,
+      metric: `$${summary?.sales || ""}`,
       icon: <MonetizationOnIcon sx={{ fontSize: "3rem" }} />,
       color: indigo[900],
       bgColor: indigo[100],
     },
     {
-      title: "profit",
-      metric: `$${transactionsSummary?.profit || ""}`,
-      icon: <PaymentsIcon sx={{ fontSize: "3rem" }} />,
-      color: pink[900],
-      bgColor: pink[100],
-    },
-    {
       title: "purchases",
-      metric: `$${transactionsSummary?.purchases || ""}`,
+      metric: `$${summary?.purchases || ""}`,
       icon: <ShoppingCartIcon sx={{ fontSize: "3rem" }} />,
       color: amber[900],
       bgColor: amber[100],
+    },
+    {
+      title: "profit",
+      metric: `$${summary?.profit || ""}`,
+      icon: <PaymentsIcon sx={{ fontSize: "3rem" }} />,
+      color: pink[900],
+      bgColor: pink[100],
     },
   ];
 

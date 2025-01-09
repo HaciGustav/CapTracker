@@ -10,13 +10,19 @@ import Box from "@mui/material/Box";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 
-const ProductsTable = ({ selectedProducts, selectedBrands }) => {
+const ProductsTable = ({
+  setOpen,
+  setInfo,
+  selectedProducts,
+  selectedBrands,
+}) => {
   const { products } = useSelector((state) => state.stock);
 
   const columnObj = {
@@ -90,6 +96,20 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
               </Box>
             </TableCell>
             <TableCell align="center">
+              <Box sx={arrowStyle}>
+                <Typography variant="body" noWrap>
+                  Minimum
+                </Typography>
+              </Box>
+            </TableCell>
+            <TableCell align="center">
+              <Box sx={arrowStyle}>
+                <Typography variant="body" noWrap>
+                  Maximum
+                </Typography>
+              </Box>
+            </TableCell>
+            <TableCell align="center">
               <Box sx={arrowStyle} onClick={() => handleSort("price")}>
                 <Typography variant="body" noWrap>
                   Price
@@ -117,8 +137,17 @@ const ProductsTable = ({ selectedProducts, selectedBrands }) => {
                 <TableCell align="center">{product.brand}</TableCell>
                 <TableCell align="center">{product.name}</TableCell>
                 <TableCell align="center">{product.stock}</TableCell>
+                <TableCell align="center">{product.min}</TableCell>
+                <TableCell align="center">{product?.max}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>
                 <TableCell align="center">
+                  <BorderColorIcon
+                    sx={btnHoverStyle}
+                    onClick={() => {
+                      setInfo(product);
+                      setOpen(true);
+                    }}
+                  />
                   <DeleteForeverIcon sx={btnHoverStyle} />
                 </TableCell>
               </TableRow>

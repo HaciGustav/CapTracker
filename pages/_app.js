@@ -10,9 +10,6 @@ import store from "@/redux/app/store";
 import { ToastContainer } from "react-toastify";
 import { SessionProvider } from "next-auth/react";
 
-// import Providers from "@/redux/Provider";
-const Loading = () => <p>LOADING...</p>;
-
 export default function App({ Component, pageProps }) {
   const [mode, setMode] = useState("light");
   const router = useRouter();
@@ -29,10 +26,10 @@ export default function App({ Component, pageProps }) {
       ...(mode === "light"
         ? {
             // palette values for light mode
-            primary: { main: "#80CFA9"},
-            secondary: { main: "#FFD1A9"},
-            background: { default: "#FFFFFF"},
-            text: { primary: "#212121"},
+            primary: { main: "#80CFA9" },
+            secondary: { main: "#FFD1A9" },
+            background: { default: "#FFFFFF" },
+            text: { primary: "#212121" },
             error: { main: "#E57373" },
             success: { main: "#66BB6A" },
             warning: { main: "#FFEE58" },
@@ -45,10 +42,10 @@ export default function App({ Component, pageProps }) {
           }
         : {
             // palette values for dark mode
-            primary: { main: "#80CFA9"},
-            secondary: { main: "#CC9D7A"},
-            background: { default: "#121212"},
-            text: { primary: "#E0E0E0"},
+            primary: { main: "#80CFA9" },
+            secondary: { main: "#CC9D7A" },
+            background: { default: "#121212" },
+            text: { primary: "#E0E0E0" },
             error: { main: "#EF5350" },
             success: { main: "#81C784" },
             warning: { main: "#FDD835" },
@@ -94,7 +91,7 @@ export default function App({ Component, pageProps }) {
           root: {
             fontSize: "1rem",
             color: "white",
-            fontWeight: "bold"
+            fontWeight: "bold",
           },
         },
       },

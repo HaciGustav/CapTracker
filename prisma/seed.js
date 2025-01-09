@@ -90,6 +90,8 @@ const seedData = {
       stock: 50,
       brandId: 1,
       categoryId: 1,
+      min: 10,
+      max: 280,
     },
     {
       name: "Laptop Pro",
@@ -97,6 +99,8 @@ const seedData = {
       stock: 30,
       brandId: 2,
       categoryId: 1,
+      min: 10,
+      max: 280,
     },
     {
       name: "Wireless Earbuds",
@@ -104,6 +108,8 @@ const seedData = {
       stock: 80,
       brandId: 3,
       categoryId: 1,
+      min: 10,
+      max: 280,
     },
     {
       name: "4K Smart TV",
@@ -111,146 +117,208 @@ const seedData = {
       stock: 20,
       brandId: 4,
       categoryId: 1,
+      min: 10,
+      max: 280,
     },
     {
       name: "Digital Camera Z",
       price: 799.99,
       stock: 15,
       brandId: 5,
+
       categoryId: 1,
+      min: 5,
+      max: 20,
     },
     {
       name: "Mystery Novel",
       price: 19.99,
       stock: 100,
       brandId: 1,
+
       categoryId: 2,
+      min: 10,
+      max: 280,
     },
     {
       name: "Science Textbook",
       price: 59.99,
-      stock: 40,
+      stock: 140,
       brandId: 2,
+
       categoryId: 2,
+      min: 100,
+      max: 2800,
     },
     {
       name: "Self-Help Guide",
       price: 25.99,
       stock: 70,
       brandId: 3,
+
       categoryId: 2,
+      min: 10,
+      max: 280,
     },
     {
       name: "Cookbook Deluxe",
       price: 35.99,
       stock: 60,
       brandId: 4,
+
       categoryId: 2,
+      min: 10,
+      max: 1210,
     },
     {
       name: "Fantasy Adventure",
       price: 15.99,
       stock: 90,
       brandId: 5,
+
       categoryId: 2,
+      min: 10,
+      max: 280,
     },
     {
       name: "Microwave Oven",
       price: 199.99,
       stock: 25,
       brandId: 1,
+
       categoryId: 3,
+      min: 10,
+      max: 280,
     },
     {
       name: "Vacuum Cleaner",
       price: 149.99,
       stock: 40,
       brandId: 2,
+
       categoryId: 3,
+      min: 10,
+      max: 280,
     },
     {
       name: "Air Purifier",
       price: 299.99,
       stock: 30,
       brandId: 3,
+
       categoryId: 3,
+      min: 10,
+      max: 280,
     },
     {
       name: "Blender Max",
       price: 89.99,
       stock: 50,
       brandId: 4,
+
       categoryId: 3,
+      min: 10,
+      max: 280,
     },
     {
       name: "Coffee Maker Pro",
       price: 129.99,
       stock: 35,
       brandId: 5,
+
       categoryId: 3,
+      min: 10,
+      max: 280,
     },
     {
       name: "Winter Jacket",
       price: 199.99,
       stock: 60,
       brandId: 1,
+
       categoryId: 4,
+      min: 10,
+      max: 280,
     },
     {
       name: "Running Shoes",
       price: 79.99,
       stock: 120,
       brandId: 2,
+
       categoryId: 4,
+      min: 10,
+      max: 280,
     },
     {
       name: "Summer Dress",
       price: 49.99,
       stock: 80,
       brandId: 3,
+
       categoryId: 4,
+      min: 10,
+      max: 280,
     },
     {
       name: "Casual Shirt",
       price: 39.99,
       stock: 100,
       brandId: 4,
+
       categoryId: 4,
+      min: 10,
+      max: 280,
     },
     {
       name: "Leather Belt",
       price: 25.99,
       stock: 50,
       brandId: 5,
+
       categoryId: 4,
+      min: 10,
+      max: 280,
     },
     {
       name: "Building Blocks",
       price: 29.99,
       stock: 200,
       brandId: 1,
+
       categoryId: 5,
+      min: 10,
+      max: 280,
     },
     {
       name: "Doll House",
       price: 59.99,
       stock: 60,
       brandId: 2,
+
       categoryId: 5,
+      min: 10,
+      max: 280,
     },
     {
       name: "RC Car",
       price: 99.99,
       stock: 40,
       brandId: 3,
+
       categoryId: 5,
+      min: 10,
+      max: 280,
     },
     {
       name: "Puzzle Set",
       price: 19.99,
       stock: 150,
       brandId: 4,
+
       categoryId: 5,
+      min: 10,
+      max: 280,
     },
     {
       name: "Action Figure",
@@ -268,6 +336,7 @@ const seedData = {
       quantity: 2,
       price: new Decimal(699.99),
       price_total: new Decimal(1399.98),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -277,6 +346,7 @@ const seedData = {
       quantity: 1,
       price: new Decimal(149.99),
       price_total: new Decimal(149.99),
+      createdAt: "",
       transaction_type: 2,
     },
     {
@@ -286,6 +356,7 @@ const seedData = {
       quantity: 3,
       price: new Decimal(799.99),
       price_total: new Decimal(2399.97),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -295,6 +366,7 @@ const seedData = {
       quantity: 5,
       price: new Decimal(24.99),
       price_total: new Decimal(124.95),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -304,6 +376,7 @@ const seedData = {
       quantity: 1,
       price: new Decimal(1299.99),
       price_total: new Decimal(1299.99),
+      createdAt: "",
       transaction_type: 2,
     },
     {
@@ -313,6 +386,7 @@ const seedData = {
       quantity: 2,
       price: new Decimal(1099.99),
       price_total: new Decimal(2199.98),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -322,6 +396,7 @@ const seedData = {
       quantity: 4,
       price: new Decimal(25.99),
       price_total: new Decimal(103.96),
+      createdAt: "",
       transaction_type: 2,
     },
     {
@@ -331,6 +406,7 @@ const seedData = {
       quantity: 1,
       price: new Decimal(199.99),
       price_total: new Decimal(199.99),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -340,6 +416,7 @@ const seedData = {
       quantity: 3,
       price: new Decimal(59.99),
       price_total: new Decimal(179.97),
+      createdAt: "",
       transaction_type: 1,
     },
     {
@@ -349,6 +426,7 @@ const seedData = {
       quantity: 2,
       price: new Decimal(129.99),
       price_total: new Decimal(259.98),
+      createdAt: "",
       transaction_type: 2,
     },
   ],
@@ -389,6 +467,14 @@ async function seedProducts(products, brands, categories) {
 }
 
 async function seedTransactions(transactions, users, brands, products) {
+  const startDate = new Date("2024-01-01T00:00:00.000Z");
+  const endDate = new Date("2024-12-31T23:59:59.999Z");
+  function randomDate() {
+    return new Date(
+      startDate.getTime() +
+        Math.random() * (endDate.getTime() - startDate.getTime())
+    );
+  }
   return Promise.all(
     transactions.map((transaction) => {
       const user = users.find((u) => u.id === transaction.userId);
@@ -401,6 +487,7 @@ async function seedTransactions(transactions, users, brands, products) {
           userId: user.id,
           brandId: brand.id,
           productId: product.id,
+          createdAt: randomDate().toISOString(),
         },
       });
     })

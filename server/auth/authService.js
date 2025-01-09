@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import prisma from "../db";
-import AuthenticationError from "../utils/AuthenticationError";
+import AuthenticationError from "../utils/error/AuthenticationError";
 import {
   loginFailLog,
   loginSuccessLog,
   registerSuccessLog,
 } from "../utils/logger/logger";
+import jwtOptions from "@/config/jwt_options.json";
 
 const JWT_SECRET = process.env.JWT_SECRET || "captracker";
-const JWT_EXPIRATION = "1h"; // Set your desired expiration time for JWT token
 
 const userExistsByMail = async (email) => {
   return await prisma.user.findUnique({ where: { email } });
@@ -19,8 +19,9 @@ const userExistsByUsername = async (username) => {
 };
 
 export const generateToken = (user) => {
-  return jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRATION,
+  const userPayload = { id: user.id, email: user.email, role: user.user_role };
+  return jwt.sign({ user: userPayload }, JWT_SECRET, {
+    expiresIn: jwtOptions.expiresIn,
   });
 };
 
@@ -59,7 +60,7 @@ export const register = async (credentials) => {
     });
 
     const token = generateToken(user);
-    registerSuccessLog();
+    registerSuccessLog(user);
     return { user, token };
   } catch (error) {
     console.log(error);

@@ -10,13 +10,15 @@ import useStockCalls from "@/hooks/useStockCalls";
 
 const Purchases = () => {
   const { purchases } = useSelector((state) => state.stock);
+  const { userId } = useSelector((state) => state.auth.user);
+
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
   const { getPurchases } = useStockCalls();
 
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState({});
+  const [info, setInfo] = useState({ userId });
 
   useEffect(() => {
     getPurchases();
@@ -31,18 +33,21 @@ const Purchases = () => {
         setOpen={setOpen}
       />
 
-      <Typography variant="h4" color="error" mb={2} 
+      <Typography
+        variant="h4"
+        color="error"
+        mb={2}
         sx={{
           fontWeight: "bold",
-          textTransform: "uppercase"
-        }}>
+          textTransform: "uppercase",
+        }}
+      >
         Purchases
       </Typography>
 
       <Button
         variant="contained"
         onClick={() => {
-          setInfo({});
           setOpen(true);
         }}
       >

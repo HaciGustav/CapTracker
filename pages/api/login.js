@@ -1,6 +1,6 @@
 import { login } from "@/server/auth/authService";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const { email, password } = req.body;
@@ -13,4 +13,6 @@ export default async function handler(req, res) {
   } else {
     res.status(405);
   }
-}
+};
+
+export default handler;

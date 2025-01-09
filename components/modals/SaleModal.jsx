@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
@@ -11,10 +11,15 @@ import FormControl from "@mui/material/FormControl";
 import { useSelector } from "react-redux";
 import { flexColumn, modalStyle } from "@/styles/globalStyle";
 import { useRouter } from "next/router";
+import useStockCalls from "@/hooks/useStockCalls";
+import { transactionTypes } from "@/helper/enums";
 
 export default function ModalSale({ open, setOpen, info, setInfo }) {
-  const router = useRouter();
   const { brands, products } = useSelector((state) => state.stock);
+
+  const { postTransaction } = useStockCalls();
+
+  const router = useRouter();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -23,10 +28,18 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(info);
+    postTransaction({ ...info, transaction_type: transactionTypes.SALE });
 
-    setOpen(false);
-    setInfo({});
+    // setOpen(false);
   };
+  const filteredProducts = useMemo(
+    () =>
+      info.brandId
+        ? products.filter((p) => p.brandId === info.brandId)
+        : products,
+    [products, info?.brandId]
+  );
 
   return (
     <Modal
@@ -45,8 +58,8 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
               labelId="brand-select-label"
               label="Brand"
               id="brand-select"
-              name="brand_id"
-              value={info?.brand_id || ""}
+              name="brandId"
+              value={info?.brandId || ""}
               onChange={handleChange}
               required
             >
@@ -71,8 +84,8 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
               labelId="product-select-label"
               label="Product"
               id="product-select"
-              name="product_id"
-              value={info?.product_id || ""}
+              name="productId"
+              value={info?.productId || ""}
               onChange={handleChange}
               required
             >
@@ -80,7 +93,7 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
                 Add New Product
               </MenuItem>
               <hr />
-              {products?.map((item) => {
+              {filteredProducts?.map((item) => {
                 return (
                   <MenuItem key={item.id} value={item.id}>
                     {item.name}
