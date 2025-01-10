@@ -6,7 +6,7 @@ import {
   loginFailLog,
   loginSuccessLog,
   registerSuccessLog,
-} from "../utils/logger/logger";
+} from "../utils/logger/_logger";
 import jwtOptions from "@/config/jwt_options.json";
 
 const JWT_SECRET = process.env.JWT_SECRET || "captracker";

@@ -7,7 +7,7 @@ import {
   deleteProductSuccessLog,
   updateProductFailLog,
   updateProductSuccessLog,
-} from "../utils/logger/logger";
+} from "../utils/logger/_logger";
 import { throwErrorOnMissingField } from "../utils/validators";
 
 const transformProduct = (product) => {

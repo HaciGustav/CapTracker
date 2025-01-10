@@ -1,5 +1,5 @@
 import prisma from "../db";
-import { systemFailLog } from "../utils/logger/logger";
+import { systemFailLog } from "../utils/logger/_logger";
 
 export const getAllLogs = async () => {
   try {
