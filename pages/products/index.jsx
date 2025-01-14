@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import ProductModal from "@/components/modals/ProductModal";
-import MultiSelect from "@/components/MultiSelect";
 import ProductsTable from "@/components/tables/ProductsTable";
 import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
@@ -38,16 +37,6 @@ const Products = () => {
       <Button variant="contained" onClick={() => setOpen(true)}>
         New Product
       </Button>
-
-      <MultiSelect
-        data1={brands}
-        data2={products}
-        key1="name"
-        key2="brand"
-        firstNames={selectedBrands}
-        setFirstNames={setSelectedBrands}
-        setSecondNames={setSelectedProducts}
-      />
 
       <ProductModal
         open={open}

@@ -27,7 +27,6 @@ model User {
   createdAt    DateTime      @default(now())
   modifiedAt   DateTime?     @updatedAt
   transactions Transaction[]
-  logs         Log[]
 }
 
 model Transaction {
@@ -77,14 +76,4 @@ model Brand {
 
   products     Product[]
   transactions Transaction[]
-}
-
-model Log {
-  id           Int      @id @default(autoincrement())
-  activityType Int
-  result       Int
-  message      String
-  userId       Int?
-  createdAt    DateTime @default(now())
-  user         User?    @relation(fields: [userId], references: [id])
 }

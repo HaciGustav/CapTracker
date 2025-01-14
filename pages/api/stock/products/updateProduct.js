@@ -1,8 +1,10 @@
 import { updateProduct } from "@/server/stock/productService";
+import logger from "@/server/utils/logger/logger";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
   if (req.method === "PUT") {
+    const userID = req.headers["captracker_userid"];
     try {
       const productInfo = req.body;
       if (!productInfo.id) {
@@ -11,15 +13,21 @@ const handler = async (req, res) => {
 
       const product = await updateProduct(productInfo);
 
-      //TODO: Log operation
+      logger
+        .meta({ type: "UPDATE", userID, item: product })
+        .log("Product has been updated!");
 
       res.status(200).json({
         product,
         message: "Product has been updated successfully!",
       });
     } catch (error) {
-      //TODO: Log Error
+      logger
+        .meta({ type: "UPDATE", userID, payload: req.body })
+        .error(error.status, error.message);
+
       console.log(error);
+
       res.status(error.status).json(error.message);
     }
   } else {

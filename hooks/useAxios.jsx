@@ -1,7 +1,21 @@
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const BASE_URL = "/api";
+
+const terminateSessionAfterUnauthorizedResponse = async (error) => {
+  const originalRequest = error.config;
+
+  if (error.response?.status === 401) {
+    signOut();
+  }
+  return Promise.reject(error);
+};
+
+const setUserIdInHeaders = (config, userId) => {
+  config.headers["captracker_userid"] = `${userId}`;
+  return config;
+};
 
 //* Axios Instance for Public API Request
 export const axiosPublic = axios.create({
@@ -11,12 +25,22 @@ export const axiosPublic = axios.create({
 const useAxios = () => {
   const { data: session } = useSession();
   const token = session?.user?.token;
-
+  const userId = session?.user?.user?.id;
+  // console.log(session?.user?.user?.id);
   //* Axios Instance for Private API Request
   const axiosWithToken = axios.create({
     baseURL: BASE_URL,
     headers: { Authorization: `Token ${token}` },
   });
+
+  // axiosWithToken.interceptors.response.use(
+  //   (config) => setUserIdInHeaders(config, userId),
+  //   async (error) => Promise.reject(error)
+  // );
+  axiosWithToken.interceptors.request.use(
+    (config) => setUserIdInHeaders(config, userId),
+    async (error) => terminateSessionAfterUnauthorizedResponse(error)
+  );
 
   return { axiosWithToken, axiosPublic };
 };

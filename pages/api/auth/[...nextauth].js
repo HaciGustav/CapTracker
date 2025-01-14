@@ -59,7 +59,7 @@ export const authOptions = {
       if (user) {
         console.log("First Login");
         console.log(datetime);
-
+        console.log({ ...token, ...user });
         return { ...token, ...user };
       }
       if (trigger === "update" && session?.user?.token) {

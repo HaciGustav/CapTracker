@@ -1,8 +1,10 @@
 import { updateTransaction } from "@/server/stock/transactionService";
+import logger from "@/server/utils/logger/logger";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
   if (req.method === "PUT") {
+    const userID = req.headers["captracker_userid"];
     try {
       const transactionInfo = req.body;
       if (!transactionInfo.id) {
@@ -10,15 +12,18 @@ const handler = async (req, res) => {
       }
 
       const transaction = await updateTransaction(transactionInfo);
-
-      //TODO: Log operation
-
+      logger
+        .meta({ type: "UPDATE", userID, item: transaction })
+        .log("Transaction has been updated!");
       res.status(200).json({
         transaction,
         message: "Transaction has been updated successfully!",
       });
     } catch (error) {
-      //TODO: Log Error
+      logger
+        .meta({ type: "UPDATE", userID, payload: req.body })
+        .error(error.status, error.message);
+
       console.log(error);
       res.status(error.status).json(error.message);
     }

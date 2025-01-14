@@ -4,6 +4,7 @@ import {
   getTotalPurchases,
   getTotalSales,
 } from "@/server/stock/transactionService";
+import logger from "@/server/utils/logger/logger";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
@@ -14,6 +15,7 @@ const handler = async (req, res) => {
       const totalPurchases = await getTotalPurchases();
       const totalSales = await getTotalSales();
       const profit = totalSales - totalPurchases;
+      // console.log({ userID: req.headers["captracker_userid"] });
       res.status(200).json({
         purchases,
         sales,
@@ -21,7 +23,7 @@ const handler = async (req, res) => {
       });
     } catch (error) {
       console.log(error);
-      res.status(error.status).json(error.message);
+      res.status(error.status || 500).json(error.message);
     }
   } else {
     res.setHeader("Allow", ["GET"]);

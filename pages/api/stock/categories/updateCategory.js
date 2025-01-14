@@ -1,4 +1,5 @@
 import { updateCategory } from "@/server/stock/categoryService";
+import logger from "@/server/utils/logger/logger";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
@@ -11,14 +12,19 @@ const handler = async (req, res) => {
 
       const category = await updateCategory(categoryInfo);
 
-      //TODO: Log operation
+      logger
+        .meta({ type: "UPDATE", userID, item: category })
+        .log("Category has been updated!");
 
       res.status(200).json({
         category,
         message: "Category has been updated successfully!",
       });
     } catch (error) {
-      //TODO: Log Error
+      logger
+        .meta({ type: "UPDATE", userID, payload: req.body })
+        .error(error.status, error.message);
+
       console.log(error);
       res.status(error.status).json(error.message);
     }

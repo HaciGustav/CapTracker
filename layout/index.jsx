@@ -50,7 +50,7 @@ export default function Layout({ window, children, toggleTheme }) {
       avatar: user?.avatar,
       userRole: user?.user_role,
       token: session?.user?.token,
-      userId: user.id,
+      userId: user?.id,
       firstname: user?.firstname,
       lastname: user?.lastname,
     };

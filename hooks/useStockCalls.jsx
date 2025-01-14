@@ -35,7 +35,7 @@ const useStockCalls = () => {
   const postStockData = async (info, url) => {
     try {
       const { data } = await axiosWithToken.post(`stock/${url}`, info);
-      console.log(data);
+      // console.log(data);
       toastSuccessNotify(data.message);
     } catch (error) {
       console.log(error);

@@ -60,10 +60,8 @@ export const register = async (credentials) => {
     });
 
     const token = generateToken(user);
-    registerSuccessLog(user);
     return { user, token };
   } catch (error) {
-    console.log(error);
     throw new AuthenticationError(500, "F*ck You");
   }
 };
@@ -74,17 +72,14 @@ export const login = async (email, password) => {
   });
 
   if (!user) {
-    loginFailLog(email, "User not found");
     throw new AuthenticationError(404, "User not found");
   }
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
   if (!isValidPassword) {
-    loginFailLog(email, "Invalid password");
     throw new AuthenticationError(400, "Invalid password");
   }
   const token = generateToken(user);
-  loginSuccessLog(user);
   return { user, token };
 };

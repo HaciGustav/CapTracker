@@ -107,7 +107,7 @@ export const updateProduct = async (productInfo) => {
 
 export const deleteProduct = async (productId) => {
   //TODO: find product by id and validate
-  console.log({ productId });
+  // console.log({ productId });
   try {
     if (false) {
       throw new StockError(400, "Product doesn't exist!");

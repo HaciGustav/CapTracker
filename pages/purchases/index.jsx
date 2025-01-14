@@ -2,7 +2,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import MultiSelect from "@/components/MultiSelect";
 import PurchaseModal from "@/components/modals/PurchaseModal";
 import PurchaseTable from "@/components/tables/PurchasesTable";
 import { getSession } from "next-auth/react";
@@ -56,16 +55,6 @@ const Purchases = () => {
 
       {purchases?.length > 0 && (
         <>
-          <MultiSelect
-            data1={purchases}
-            data2={purchases}
-            key1="brand"
-            key2="product"
-            firstNames={selectedBrands}
-            setFirstNames={setSelectedBrands}
-            setSecondNames={setSelectedProducts}
-          />
-
           <PurchaseTable
             setOpen={setOpen}
             setInfo={setInfo}

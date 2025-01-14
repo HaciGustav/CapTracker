@@ -6,7 +6,6 @@ const verifyToken = (token) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return { isValid: true, isExpired: false, decoded: decoded.user };
   } catch (error) {
-    console.log(error);
     if (error.name === "TokenExpiredError") {
       return { isValid: false, isExpired: true, decoded: null };
     }
