@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import ProductModal from "@/components/modals/ProductModal";
 import MultiSelect from "@/components/MultiSelect";
 import ProductsTable from "@/components/tables/ProductsTable";
-import { getCookie } from "cookies-next";
 import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
