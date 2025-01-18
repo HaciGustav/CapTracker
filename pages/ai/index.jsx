@@ -18,11 +18,15 @@ const AIComponent = () => {
 
   return (
     <Box>
-      <Typography variant="h4" color="error" mb={2} 
+      <Typography
+        variant="h4"
+        color="error"
+        mb={2}
         sx={{
           fontWeight: "bold",
-          textTransform: "uppercase"
-        }}>
+          textTransform: "uppercase",
+        }}
+      >
         Brands
       </Typography>
 
@@ -31,13 +35,9 @@ const AIComponent = () => {
         onChange={(e) => setPrompt(e.target.value)}
         placeholder="Enter your prompt"
         multiline
-      >
-      </TextField>
-      <br/>
-      <Button
-        variant="contained"
-        onClick={handlePromptSubmit}
-      >
+      ></TextField>
+      <br />
+        <Button variant="contained" onClick={handlePromptSubmit} sx={{ marginBlock: "10px" }}>
         Ask AI
       </Button>
       <div>
