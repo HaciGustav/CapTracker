@@ -5,7 +5,7 @@ const BASE_URL = "/api";
 
 const terminateSessionAfterUnauthorizedResponse = async (error) => {
   const originalRequest = error.config;
-
+  console.log(error.response?.status);
   if (error.response?.status === 401) {
     signOut();
   }
@@ -26,20 +26,19 @@ const useAxios = () => {
   const { data: session } = useSession();
   const token = session?.user?.token;
   const userId = session?.user?.user?.id;
-  // console.log(session?.user?.user?.id);
   //* Axios Instance for Private API Request
   const axiosWithToken = axios.create({
     baseURL: BASE_URL,
     headers: { Authorization: `Token ${token}` },
   });
 
-  // axiosWithToken.interceptors.response.use(
-  //   (config) => setUserIdInHeaders(config, userId),
-  //   async (error) => Promise.reject(error)
-  // );
+  axiosWithToken.interceptors.response.use(
+    (response) => response,
+    async (error) => terminateSessionAfterUnauthorizedResponse(error)
+  );
   axiosWithToken.interceptors.request.use(
     (config) => setUserIdInHeaders(config, userId),
-    async (error) => terminateSessionAfterUnauthorizedResponse(error)
+    async (error) => Promise.reject(error)
   );
 
   return { axiosWithToken, axiosPublic };
