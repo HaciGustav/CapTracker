@@ -68,10 +68,32 @@ const useAuthCalls = () => {
     }
   };
 
+  const sendResetMail = async (email) => {
+    try {
+      await axiosPublic.post("/sendResetMail", { email });
+      toastSuccessNotify("Recovery mail has been sent!");
+    } catch (err) {
+      console.log(err);
+      toastErrorNotify(err.response.data);
+    }
+  };
+
+  const resetPassword = async (token, password) => {
+    try {
+      await axiosPublic.post("/resetPassword", { token, password });
+      toastSuccessNotify("Password successfully updated!");
+    } catch (err) {
+      console.log(err);
+      toastErrorNotify(err.response.data);
+    }
+  };
+
   return {
     login,
     logout,
     register,
+    sendResetMail,
+    resetPassword,
   };
 };
 

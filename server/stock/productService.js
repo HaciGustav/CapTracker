@@ -1,13 +1,6 @@
 import prisma from "../db";
 import StockError from "../utils/error/StockError";
-import {
-  createProductFailLog,
-  createProductSuccessLog,
-  deleteProductFailLog,
-  deleteProductSuccessLog,
-  updateProductFailLog,
-  updateProductSuccessLog,
-} from "../utils/logger/_logger";
+
 import { throwErrorOnMissingField } from "../utils/validators";
 
 const transformProduct = (product) => {
@@ -79,11 +72,11 @@ export const createProduct = async (productInfo) => {
     const product = await prisma.product.create({
       data: productInfo,
     });
-    createProductSuccessLog("", product);
+
     return product;
   } catch (error) {
     console.log(error);
-    createProductFailLog("", productInfo);
+
     throw new StockError(500, "Something went wrong on the server!");
   }
 };
@@ -96,10 +89,9 @@ export const updateProduct = async (productInfo) => {
         ...productInfo,
       },
     });
-    updateProductSuccessLog("", updatedProduct);
+
     return updatedProduct;
   } catch (error) {
-    updateProductFailLog("", productInfo);
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -120,10 +112,9 @@ export const deleteProduct = async (productId) => {
         isDeleted: true,
       },
     });
-    deleteProductSuccessLog("", productId);
   } catch (error) {
     console.log(error);
-    deleteProductFailLog("", productId);
+
     throw new StockError(500, "Something went wrong on the server!");
   }
 };

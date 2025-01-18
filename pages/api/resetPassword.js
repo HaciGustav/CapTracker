@@ -1,17 +1,19 @@
-import { login } from "@/server/auth/authService";
+import { resetPassword } from "@/server/auth/authService";
 import logger from "@/server/utils/logger/logger";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { token, password } = req.body;
     try {
-      const credentials = await login(email, password);
+      const credentials = await resetPassword(token, password);
 
-      logger.meta({ type: "LOGIN", email }).log("User logged in!");
+      logger
+        .meta({ type: "PASSWORD", email: credentials.email })
+        .log("User reset password!");
       res.status(200).json(credentials);
     } catch (error) {
       console.log(error);
-      logger.meta({ type: "LOGIN", email }).error(error.status, error.message);
+      logger.meta({ type: "PASSWORD" }).error(error.status, error.message);
       res.status(error.status).json(error.message);
     }
   } else {
