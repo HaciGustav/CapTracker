@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import StarsIcon from "@mui/icons-material/Stars";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -40,6 +41,11 @@ const navigationItems = [
     title: "Products",
     icon: <InventoryIcon />,
     url: "/products",
+  },
+  {
+    title: "AI",
+    icon: <AutoAwesomeIcon />,
+    url: "/ai",
   },
 ];
 const navigationAdmin = {
