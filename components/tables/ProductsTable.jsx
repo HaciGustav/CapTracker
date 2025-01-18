@@ -20,12 +20,7 @@ import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 
-const ProductsTable = ({
-  setOpen,
-  setInfo,
-  selectedProducts,
-  selectedBrands,
-}) => {
+const ProductsTable = ({ setOpen, setInfo }) => {
   const { products } = useSelector((state) => state.stock);
 
   const columnObj = {
@@ -55,15 +50,8 @@ const ProductsTable = ({
   const handleMinStockChange = (event) => setMinStock(event.target.value);
   const handleMaxStockChange = (event) => setMaxStock(event.target.value);
 
-  const isBrandSelected = (item) =>
-    selectedBrands.includes(item.brand) || selectedBrands.length === 0;
-
-  const isProductSelected = (item) =>
-    selectedProducts.includes(item.name) || selectedProducts.length === 0;
-
   const filteredData = sortedData
-    .filter((item) => isBrandSelected(item))
-    .filter((item) => isProductSelected(item))
+
     .filter(
       (item) =>
         item.name.toLowerCase().includes(searchTerm) ||
@@ -72,7 +60,6 @@ const ProductsTable = ({
     .filter((item) => !selectedCategory || item.category === selectedCategory)
     .filter((item) => (minStock ? item.stock >= Number(minStock) : true))
     .filter((item) => (maxStock ? item.stock <= Number(maxStock) : true));
-
   return (
     <Box>
       {/* Filter Inputs */}
@@ -196,12 +183,12 @@ const ProductsTable = ({
                 <TableCell align="center" component="th" scope="row">
                   {product.id}
                 </TableCell>
-                <TableCell align="center">{product.name}</TableCell>
-                <TableCell align="center">{product.brand}</TableCell>
                 <TableCell align="center">{product.category}</TableCell>
+                <TableCell align="center">{product.brand}</TableCell>
+                <TableCell align="center">{product.name}</TableCell>
                 <TableCell align="center">{product.stock}</TableCell>
                 <TableCell align="center">{product.min}</TableCell>
-                <TableCell align="center">{product.max}</TableCell>
+                <TableCell align="center">{product?.max}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>
                 <TableCell align="center">
                   <BorderColorIcon

@@ -10,6 +10,9 @@ export const getAllBrands = async () => {
       },
     });
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -18,13 +21,15 @@ export const getAllBrands = async () => {
 export const createBrand = async (brandInfo) => {
   const validatingFields = ["name"];
   throwErrorOnMissingField(validatingFields, brandInfo);
-
   try {
     const brand = await prisma.brand.create({
       data: brandInfo,
     });
     return brand;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -40,6 +45,9 @@ export const updateBrand = async (brandInfo) => {
     });
     return updatedBrand;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -62,6 +70,9 @@ export const deleteBrand = async (brandId) => {
     });
     return deleteBrand;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }

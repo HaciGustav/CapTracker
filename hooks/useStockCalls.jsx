@@ -39,7 +39,7 @@ const useStockCalls = () => {
       toastSuccessNotify(data.message);
     } catch (error) {
       console.log(error);
-      toastErrorNotify(`${url} can not be added`);
+      toastErrorNotify(`${error.response?.status} ${error.response?.data}`);
     }
   };
 
@@ -55,10 +55,9 @@ const useStockCalls = () => {
     try {
       const { data } = await axiosWithToken.delete(`stock/${url}?id=${id}`);
       toastSuccessNotify(data.message);
-      // getStockData(url);
     } catch (error) {
       console.log(error);
-      toastErrorNotify(`${url} can not be deleted`);
+      toastErrorNotify(`${error.response?.status} ${error.response?.data}`);
     }
   };
 
@@ -77,7 +76,7 @@ const useStockCalls = () => {
       getStockData(url);
     } catch (error) {
       console.log(error);
-      toastErrorNotify(`${url} can not be updated`);
+      toastErrorNotify(`${error.response?.status} ${error.response?.data}`);
     }
   };
 
@@ -96,7 +95,6 @@ const useStockCalls = () => {
     getCategories,
     getProducts,
     getBrands,
-
     deleteBrand,
     deleteProduct,
     deleteTransaction,

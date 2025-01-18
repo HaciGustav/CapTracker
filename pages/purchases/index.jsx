@@ -8,19 +8,27 @@ import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
 const Purchases = () => {
-  const { purchases } = useSelector((state) => state.stock);
-  const { userId } = useSelector((state) => state.auth.user);
+  const { purchases, products, categories, brands } = useSelector(
+    (state) => state.stock
+  );
 
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [selectedBrands, setSelectedBrands] = useState([]);
-
-  const { getPurchases } = useStockCalls();
+  const { getPurchases, getCategories, getBrands, getProducts } =
+    useStockCalls();
 
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState({ userId });
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     getPurchases();
+    if (!products.length) {
+      getProducts();
+    }
+    if (!categories.length) {
+      getCategories();
+    }
+    if (!brands.length) {
+      getBrands();
+    }
   }, []);
 
   return (
@@ -48,6 +56,7 @@ const Purchases = () => {
         variant="contained"
         onClick={() => {
           setOpen(true);
+          setInfo({});
         }}
       >
         New Purchase
@@ -55,12 +64,7 @@ const Purchases = () => {
 
       {purchases?.length > 0 && (
         <>
-          <PurchaseTable
-            setOpen={setOpen}
-            setInfo={setInfo}
-            selectedProducts={selectedProducts}
-            selectedBrands={selectedBrands}
-          />
+          <PurchaseTable setOpen={setOpen} setInfo={setInfo} />
         </>
       )}
     </>

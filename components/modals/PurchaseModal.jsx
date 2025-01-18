@@ -19,6 +19,10 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
   const { brands, products } = useSelector((state) => state.stock);
   const { postTransaction } = useStockCalls();
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -28,6 +32,7 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
     e.preventDefault();
     postTransaction({ ...info, transaction_type: transactionTypes.PURCHASE });
     setOpen(false);
+    setInfo({});
   };
 
   const filteredProducts = useMemo(
@@ -35,9 +40,9 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
       info.brandId
         ? products.filter((p) => p.brandId === info.brandId)
         : products,
-    [products, info?.brandId]
+    [products, info?.brandId, info?.id]
   );
-
+  console.log(info);
   return (
     <Modal
       open={open}
@@ -116,7 +121,7 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
             type="number"
             variant="outlined"
             name="price"
-            InputProps={{ inputProps: { min: 0 } }}
+            InputProps={{ inputProps: { min: 0, step: "0.01" } }}
             value={info?.price || ""}
             onChange={handleChange}
             required

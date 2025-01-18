@@ -14,8 +14,7 @@ const handler = async (req, res) => {
       const sales = await getAllSales();
       const totalPurchases = await getTotalPurchases();
       const totalSales = await getTotalSales();
-      const profit = totalSales - totalPurchases;
-      // console.log({ userID: req.headers["captracker_userid"] });
+      const profit = (totalSales - totalPurchases).toFixed(2);
       res.status(200).json({
         purchases,
         sales,

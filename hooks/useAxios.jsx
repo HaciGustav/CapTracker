@@ -5,7 +5,7 @@ const BASE_URL = "/api";
 
 const terminateSessionAfterUnauthorizedResponse = async (error) => {
   const originalRequest = error.config;
-  console.log(error.response?.status);
+
   if (error.response?.status === 401) {
     signOut();
   }

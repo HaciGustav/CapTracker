@@ -1,4 +1,5 @@
 import { createTransaction } from "@/server/stock/transactionService";
+import logger from "@/server/utils/logger/logger";
 import { withAuth } from "@/server/utils/middleware/authMiddleware";
 
 const handler = async (req, res) => {
@@ -19,7 +20,7 @@ const handler = async (req, res) => {
         .meta({ type: "CREATE", userID, payload: req.body })
         .error(error.status, error.message);
 
-      console.log(error);
+      console.log("API", error);
       res.status(error.status).json(error.message);
     }
   } else {

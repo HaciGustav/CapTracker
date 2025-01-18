@@ -47,6 +47,9 @@ export const getAllTransactions = async (transactionType) => {
 
     return transactions.map((transaction) => transformTransaction(transaction));
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -68,6 +71,9 @@ export const getTotalSales = async () => {
     }, 0);
     return total.toFixed(2);
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -83,6 +89,9 @@ export const getTotalPurchases = async () => {
 
     return total.toFixed(2);
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -120,6 +129,12 @@ export const createTransaction = async (transactionInfo) => {
 
     return transaction;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -142,6 +157,9 @@ export const deleteTransaction = async (transactionId) => {
     });
     return deleteTransaction;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -175,6 +193,9 @@ export const updateTransaction = async (transactionInfo) => {
 
     return updatedTransaction;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }

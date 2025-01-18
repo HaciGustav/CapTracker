@@ -9,15 +9,20 @@ import { getSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
 
 const Products = () => {
-  const { getProducts } = useStockCalls();
-  const { products, brands } = useSelector((state) => state.stock);
+  const { getProducts, getCategories, getBrands } = useStockCalls();
+  const { products, brands, categories } = useSelector((state) => state.stock);
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
-  const [selectedBrands, setSelectedBrands] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
 
   useEffect(() => {
     getProducts();
+
+    if (!categories.length) {
+      getCategories();
+    }
+    if (!brands.length) {
+      getBrands();
+    }
   }, []);
 
   return (
@@ -34,7 +39,13 @@ const Products = () => {
         Products
       </Typography>
 
-      <Button variant="contained" onClick={() => setOpen(true)}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setOpen(true);
+          setInfo({});
+        }}
+      >
         New Product
       </Button>
 
@@ -46,12 +57,7 @@ const Products = () => {
       />
 
       {products?.length > 0 && (
-        <ProductsTable
-          setOpen={setOpen}
-          setInfo={setInfo}
-          selectedProducts={selectedProducts}
-          selectedBrands={selectedBrands}
-        />
+        <ProductsTable setOpen={setOpen} setInfo={setInfo} />
       )}
     </Box>
   );
