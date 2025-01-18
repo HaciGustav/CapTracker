@@ -21,6 +21,8 @@ model User {
   createdAt    DateTime      @default(now())
   modifiedAt   DateTime?     @updatedAt
   transactions Transaction[]
+  resetToken         String?
+  resetTokenExpires  DateTime?
 }
 
 model Transaction {

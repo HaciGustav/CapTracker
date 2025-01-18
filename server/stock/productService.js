@@ -1,6 +1,5 @@
 import prisma from "../db";
 import StockError from "../utils/error/StockError";
-
 import { throwErrorOnMissingField } from "../utils/validators";
 
 const transformProduct = (product) => {

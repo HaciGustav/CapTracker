@@ -7,7 +7,7 @@ const handler = async (req, res) => {
     const userID = req.headers["captracker_userid"];
 
     try {
-      const transactionInfo = req.body;
+      const transactionInfo = { ...req.body, userId: parseInt(userID) };
       const transaction = await createTransaction(transactionInfo);
 
       logger

@@ -14,10 +14,10 @@ import { useDispatch } from "react-redux";
 import Head from "next/head";
 import { TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { toastErrorNotify } from "@/helper/ToastNotify";
+import { toastErrorNotify, toastWarnNotify } from "@/helper/ToastNotify";
 
 const Login = () => {
-  const { login } = useAuthCalls();
+  const { login, sendResetMail } = useAuthCalls();
 
   const [inputVal, setInputVal] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +31,16 @@ const Login = () => {
 
     setIsLoading(true);
     await login(inputVal).finally(() => setIsLoading(false));
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (!inputVal.email) {
+      toastWarnNotify("Email is required!");
+      return;
+    }
+    setIsLoading(true);
+    sendResetMail(inputVal.email).finally(() => setIsLoading(false));
   };
 
   return (
@@ -49,10 +59,14 @@ const Login = () => {
           }}
         >
           <Grid item xs={12} mb={3}>
-            <Typography variant="h3" color="primary" align="center"
+            <Typography
+              variant="h3"
+              color="primary"
+              align="center"
               sx={{
-                fontWeight: "bold"
-              }}>
+                fontWeight: "bold",
+              }}
+            >
               CapTracker
             </Typography>
           </Grid>
@@ -83,8 +97,9 @@ const Login = () => {
               color="secondary.light"
               sx={{
                 fontWeight: "bold",
-                textTransform: "uppercase"
-              }}>
+                textTransform: "uppercase",
+              }}
+            >
               Login
             </Typography>
 
@@ -115,11 +130,31 @@ const Login = () => {
               >
                 Submit
               </LoadingButton>
+              <LoadingButton
+                loading={isLoading}
+                loadingPosition="center"
+                variant="contained"
+                onClick={handleResetPassword}
+                size="small"
+                color="secondary"
+                sx={{
+                  fontWeight: "400",
+                  textTransform: "capitalize",
+                  marginTop: "-10px",
+                  paddingBlock: "0",
+                }}
+              >
+                Reset Password
+              </LoadingButton>
             </Box>
-
             <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Link href={"/auth/register"}>Don't have an account? Register here!</Link>
+              <Link href={"/auth/register"}>
+                Don't have an account? Register here!
+              </Link>
             </Box>
+            {/* <Box sx={{ textAlign: "center", mt: 2, color: "gray" }}>
+              <Link href={"/auth/reset"}>Forgot your password? Reset here!</Link>
+            </Box> */}
           </Grid>
 
           <Grid item xs={10} sm={7} md={6}>

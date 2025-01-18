@@ -18,7 +18,8 @@ const handler = async (req, res) => {
       res.status(error.status).json(error.message);
     }
   } else {
-    res.status(405);
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };
 export default handler;

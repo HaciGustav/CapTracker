@@ -105,10 +105,10 @@ export const createTransaction = async (transactionInfo) => {
   const isSale = transaction_type === transactionTypes.SALE;
   try {
     const product = await getProductById(productId);
-    // console.log({ product });
     if (isSale && !isSaleValid(product.stock, quantity)) {
       throw new StockError(400, "Not enough products in stock!");
     }
+    console.log({ transactionInfo });
 
     const transaction = await prisma.transaction.create({
       data: {
