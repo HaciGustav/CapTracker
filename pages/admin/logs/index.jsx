@@ -1,9 +1,16 @@
 import LogsTable from "@/components/tables/LogsTable";
 import { isUserAdminBySession } from "@/helper/userRoleValidation";
-import useSortColumn from "@/hooks/useSortColumn";
+import useAdminCalls from "@/hooks/useAdminCalls";
 import { Box, Typography } from "@mui/material";
 import { getSession } from "next-auth/react";
+import { useEffect } from "react";
 const Logs = () => {
+  const { getLogs } = useAdminCalls();
+
+  useEffect(() => {
+    getLogs();
+  }, []);
+
   return (
     <Box>
       <Typography

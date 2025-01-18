@@ -17,12 +17,7 @@ import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 
-const ProductsTable = ({
-  setOpen,
-  setInfo,
-  selectedProducts,
-  selectedBrands,
-}) => {
+const ProductsTable = ({ setOpen, setInfo }) => {
   const { products } = useSelector((state) => state.stock);
 
   const columnObj = {
@@ -38,12 +33,6 @@ const ProductsTable = ({
     products,
     columnObj
   );
-
-  const isBrandSelected = (item) =>
-    selectedBrands.includes(item.brand) || selectedBrands.length === 0;
-
-  const isProductSelected = (item) =>
-    selectedProducts.includes(item.name) || selectedProducts.length === 0;
 
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
@@ -122,36 +111,33 @@ const ProductsTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData
-            ?.filter((item) => isBrandSelected(item))
-            .filter((item) => isProductSelected(item))
-            .map((product) => (
-              <TableRow
-                key={product.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center" component="th" scope="row">
-                  {product.id}
-                </TableCell>
-                <TableCell align="center">{product.category}</TableCell>
-                <TableCell align="center">{product.brand}</TableCell>
-                <TableCell align="center">{product.name}</TableCell>
-                <TableCell align="center">{product.stock}</TableCell>
-                <TableCell align="center">{product.min}</TableCell>
-                <TableCell align="center">{product?.max}</TableCell>
-                <TableCell align="center">${product.price}</TableCell>
-                <TableCell align="center">
-                  <BorderColorIcon
-                    sx={btnHoverStyle}
-                    onClick={() => {
-                      setInfo(product);
-                      setOpen(true);
-                    }}
-                  />
-                  <DeleteForeverIcon sx={btnHoverStyle} />
-                </TableCell>
-              </TableRow>
-            ))}
+          {sortedData.map((product) => (
+            <TableRow
+              key={product.name}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell align="center" component="th" scope="row">
+                {product.id}
+              </TableCell>
+              <TableCell align="center">{product.category}</TableCell>
+              <TableCell align="center">{product.brand}</TableCell>
+              <TableCell align="center">{product.name}</TableCell>
+              <TableCell align="center">{product.stock}</TableCell>
+              <TableCell align="center">{product.min}</TableCell>
+              <TableCell align="center">{product?.max}</TableCell>
+              <TableCell align="center">${product.price}</TableCell>
+              <TableCell align="center">
+                <BorderColorIcon
+                  sx={btnHoverStyle}
+                  onClick={() => {
+                    setInfo(product);
+                    setOpen(true);
+                  }}
+                />
+                <DeleteForeverIcon sx={btnHoverStyle} />
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

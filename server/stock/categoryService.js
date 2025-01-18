@@ -10,6 +10,9 @@ export const getAllCategories = async () => {
       },
     });
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -25,6 +28,9 @@ export const createCategory = async (categoryInfo) => {
     });
     return category;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -40,6 +46,9 @@ export const updateCategory = async (categoryInfo) => {
     });
     return category;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -59,6 +68,9 @@ export const deleteCategory = async (categoryId) => {
       },
     });
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }

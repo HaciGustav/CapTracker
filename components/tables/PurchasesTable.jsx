@@ -17,12 +17,7 @@ import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle, flex } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 
-const PurchasesTable = ({
-  setOpen,
-  setInfo,
-  selectedProducts,
-  selectedBrands,
-}) => {
+const PurchasesTable = ({ setOpen, setInfo }) => {
   const { purchases } = useSelector((state) => state.stock);
 
   const columnObj = {
@@ -39,12 +34,6 @@ const PurchasesTable = ({
     purchases,
     columnObj
   );
-
-  const isBrandSelected = (item) =>
-    selectedBrands.includes(item.brand) || selectedBrands.length === 0;
-
-  const isProductSelected = (item) =>
-    selectedProducts.includes(item.product) || selectedProducts.length === 0;
 
   const formatDateTime = (date) => {
     return `${new Date(date).toLocaleDateString("tr")}-
@@ -121,44 +110,27 @@ const PurchasesTable = ({
                 {columns.price_total !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {sortedData
-            ?.filter((item) => isBrandSelected(item))
-            .filter((item) => isProductSelected(item))
-            .map((item) => (
-              <TableRow
-                key={item.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center">
-                  {formatDateTime(item?.createdAt)}
-                </TableCell>
-                <TableCell align="center">{item?.category}</TableCell>
-                {/* <TableCell align="center">{"item.firm"}</TableCell> */}
-                <TableCell align="center">{item?.brand}</TableCell>
-                <TableCell align="center">{item?.product}</TableCell>
-                <TableCell align="center">{item?.quantity}</TableCell>
-                <TableCell align="center">{`$${item?.price}`}</TableCell>
-                <TableCell align="center">{`$${item?.price_total}`}</TableCell>
-                <TableCell>
-                  <Box sx={flex}>
-                    <BorderColorIcon
-                      sx={btnHoverStyle}
-                      onClick={() => {
-                        setInfo(item);
-                        setOpen(true);
-                      }}
-                    />
-
-                    <DeleteForeverIcon sx={btnHoverStyle} />
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
+          {sortedData.map((item) => (
+            <TableRow
+              key={item.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell align="center">
+                {formatDateTime(item?.createdAt)}
+              </TableCell>
+              <TableCell align="center">{item?.category}</TableCell>
+              {/* <TableCell align="center">{"item.firm"}</TableCell> */}
+              <TableCell align="center">{item?.brand}</TableCell>
+              <TableCell align="center">{item?.product}</TableCell>
+              <TableCell align="center">{item?.quantity}</TableCell>
+              <TableCell align="center">{`$${item?.price}`}</TableCell>
+              <TableCell align="center">{`$${item?.price_total}`}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

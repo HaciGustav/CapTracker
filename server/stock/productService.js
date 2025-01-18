@@ -1,13 +1,6 @@
 import prisma from "../db";
 import StockError from "../utils/error/StockError";
-import {
-  createProductFailLog,
-  createProductSuccessLog,
-  deleteProductFailLog,
-  deleteProductSuccessLog,
-  updateProductFailLog,
-  updateProductSuccessLog,
-} from "../utils/logger/_logger";
+
 import { throwErrorOnMissingField } from "../utils/validators";
 
 const transformProduct = (product) => {
@@ -40,6 +33,9 @@ export const getProductById = async (productId) => {
     });
     return transformProduct(product);
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -66,6 +62,9 @@ export const getAllProducts = async () => {
 
     return products.map((product) => transformProduct(product));
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
@@ -74,40 +73,49 @@ export const getAllProducts = async () => {
 export const createProduct = async (productInfo) => {
   const validatingFields = ["name", "price", "stock", "brandId", "categoryId"];
   throwErrorOnMissingField(validatingFields, productInfo);
+  const { stock, min, max, price } = productInfo;
 
   try {
     const product = await prisma.product.create({
-      data: productInfo,
+      data: {
+        ...productInfo,
+        stock: parseInt(stock),
+        min: parseInt(min),
+        max: parseInt(max),
+        price: parseFloat(price).toFixed(2),
+      },
     });
-    createProductSuccessLog("", product);
     return product;
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
-    createProductFailLog("", productInfo);
     throw new StockError(500, "Something went wrong on the server!");
   }
 };
 
 export const updateProduct = async (productInfo) => {
+  console.log(productInfo);
   try {
+    const { id, brand, category, ...restInfo } = productInfo;
     const updatedProduct = await prisma.product.update({
       where: { id: parseInt(productInfo.id) },
       data: {
-        ...productInfo,
+        ...restInfo,
       },
     });
-    updateProductSuccessLog("", updatedProduct);
     return updatedProduct;
   } catch (error) {
-    updateProductFailLog("", productInfo);
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
     throw new StockError(500, "Something went wrong on the server!");
   }
 };
 
 export const deleteProduct = async (productId) => {
-  //TODO: find product by id and validate
-  // console.log({ productId });
   try {
     if (false) {
       throw new StockError(400, "Product doesn't exist!");
@@ -120,10 +128,11 @@ export const deleteProduct = async (productId) => {
         isDeleted: true,
       },
     });
-    deleteProductSuccessLog("", productId);
   } catch (error) {
+    if (error instanceof StockError) {
+      throw error;
+    }
     console.log(error);
-    deleteProductFailLog("", productId);
     throw new StockError(500, "Something went wrong on the server!");
   }
 };

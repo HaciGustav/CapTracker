@@ -1,3 +1,5 @@
+import StockError from "./error/StockError";
+
 export const throwErrorOnMissingField = (fields, data) => {
   fields.forEach((field) => {
     if (!data[field]) {

@@ -2,11 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import prisma from "../db";
 import AuthenticationError from "../utils/error/AuthenticationError";
-import {
-  loginFailLog,
-  loginSuccessLog,
-  registerSuccessLog,
-} from "../utils/logger/_logger";
 import jwtOptions from "@/config/jwt_options.json";
 
 const JWT_SECRET = process.env.JWT_SECRET || "captracker";

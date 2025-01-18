@@ -31,7 +31,7 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
     console.log(info);
     postTransaction({ ...info, transaction_type: transactionTypes.SALE });
 
-    // setOpen(false);
+    setOpen(false);
   };
   const filteredProducts = useMemo(
     () =>
@@ -119,7 +119,7 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
             type="number"
             variant="outlined"
             name="price"
-            InputProps={{ inputProps: { min: 0 } }}
+            InputProps={{ inputProps: { min: 0, step: "0.01" } }}
             value={info?.price || ""}
             onChange={handleChange}
             required

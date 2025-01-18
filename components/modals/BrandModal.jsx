@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import useStockCalls from "@/hooks/useStockCalls";
 
 export default function BrandModal({ open, setOpen, info, setInfo }) {
-  const { postBrand, putBrand } = useStockCalls();
+  const { postBrand, putBrand, getBrands } = useStockCalls();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -16,14 +16,15 @@ export default function BrandModal({ open, setOpen, info, setInfo }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(info);
     if (info?.id) {
-      postBrand(info);
+      putBrand(info);
     } else {
-      const { id, ...infoWithoutId } = info;
-      putBrand(infoWithoutId);
+      postBrand(info);
     }
+
     setOpen(false);
+    setInfo({});
   };
 
   return (

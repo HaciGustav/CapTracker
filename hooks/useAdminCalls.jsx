@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import useAxios from "./useAxios";
-import { fetchFail, fetchStart } from "@/redux/slices/stockSlice";
+import { fetchFail, fetchStart, getSuccess } from "@/redux/slices/stockSlice";
+import { toastErrorNotify } from "@/helper/ToastNotify";
 
 const useAdminCalls = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,19 @@ const useAdminCalls = () => {
     }
   };
 
-  return { getAllLogs };
+  const getLogs = async () => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosWithToken.get("log/getAllLogs");
+      dispatch(getSuccess({ data, name: "logs" }));
+    } catch (error) {
+      dispatch(fetchFail());
+      console.log(error);
+      toastErrorNotify(`${error.response?.status} ${error.response?.data}`);
+    }
+  };
+
+  return { getLogs };
 };
 
 export default useAdminCalls;
