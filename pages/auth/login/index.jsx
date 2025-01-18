@@ -120,6 +120,9 @@ const Login = () => {
             <Box sx={{ textAlign: "center", mt: 2 }}>
               <Link href={"/auth/register"}>Don't have an account? Register here!</Link>
             </Box>
+            <Box sx={{ textAlign: "center", mt: 2, color: "gray" }}>
+              <Link href={"/auth/reset"}>Forgot your password? Reset here!</Link>
+            </Box>
           </Grid>
 
           <Grid item xs={10} sm={7} md={6}>
