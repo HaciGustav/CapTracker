@@ -1,9 +1,16 @@
-import LogsTable from "@/components/tables/LogsTable";
-import { isUserAdminBySession } from "@/helper/userRoleValidation";
-import useSortColumn from "@/hooks/useSortColumn";
 import { Box, Typography } from "@mui/material";
+import { isUserAdminBySession } from "@/helper/userRoleValidation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import prisma from "@/server/db";
+import LogsTable from "@/components/tables/LogsTable";
 import { getSession } from "next-auth/react";
-const Logs = () => {
+import useAdminCalls from "@/hooks/useAdminCalls";
+
+const Logs = ({logs}) => {
+  const [open, setOpen] = useState(false);
+  const [info, setInfo] = useState({});
+
   return (
     <Box>
       <Typography
@@ -18,7 +25,13 @@ const Logs = () => {
         Log Details
       </Typography>
 
-      <LogsTable />
+      {logs?.length > 0 && (
+        <LogsTable
+          setOpen={setOpen}
+          setInfo={setInfo}
+          logs={logs}
+        />
+      )}
     </Box>
   );
 };
@@ -43,6 +56,33 @@ export const getServerSideProps = async (context) => {
       },
     };
   }
+  try {
+    const logs = await prisma.$queryRaw`
+        SELECT 
+        id
+        ,timestamp
+        ,level
+        ,message
+        ,meta
+        FROM public.captracker_logs
+        WHERE COALESCE(meta, '') <> ''
+        ORDER BY id ASC
+    `;
+    const logsReturn = logs.map((log) => ({
+      ...log,
+      id: Number(log.id),
+      timestamp: log.timestamp.toISOString(),
+      meta: JSON.parse(log.meta),
+      errsole_id: "",
+    }));
+
+    return {
+      props: { session, logs: logsReturn },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
     props: { session },
   };

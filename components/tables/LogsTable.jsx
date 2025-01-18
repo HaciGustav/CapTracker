@@ -17,17 +17,16 @@ import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
 
-const LogsTable = () => {
+const LogsTable = ({logs}) => {
   const columnObj = {
-    category: 1,
-    brand: 1,
-    name: 1,
-    stock: 1,
-    price: 1,
     id: 1,
+    timestamp: 1,
+    level: 1,
+    message: 1,
+    meta: 1
   };
 
-  const { sortedData, handleSort, columns } = useSortColumn([], columnObj);
+  const { sortedData, handleSort, columns } = useSortColumn(logs, columnObj);
 
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
@@ -44,87 +43,56 @@ const LogsTable = () => {
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("category")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("timestamp")}>
                 <Typography variant="body" noWrap>
-                  Category
+                  Timestamp
                 </Typography>
-                {columns.category === 1 && <UpgradeIcon />}
-                {columns.category !== 1 && <VerticalAlignBottomIcon />}
+                {columns.timestamp === 1 && <UpgradeIcon />}
+                {columns.timestamp !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("brand")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("level")}>
                 <Typography variant="body" noWrap>
-                  Brand
+                  Level
                 </Typography>
-                {columns.brand === 1 && <UpgradeIcon />}
-                {columns.brand !== 1 && <VerticalAlignBottomIcon />}
+                {columns.level === 1 && <UpgradeIcon />}
+                {columns.level !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("name")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("message")}>
                 <Typography variant="body" noWrap>
-                  Name
+                  Message
                 </Typography>
-                {columns.name === 1 && <UpgradeIcon />}
-                {columns.name !== 1 && <VerticalAlignBottomIcon />}
+                {columns.message === 1 && <UpgradeIcon />}
+                {columns.message !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("stock")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("meta")}>
                 <Typography variant="body" noWrap>
-                  Stock
+                  Meta
                 </Typography>
-                {columns.stock === 1 && <UpgradeIcon />}
-                {columns.stock !== 1 && <VerticalAlignBottomIcon />}
+                {columns.meta === 1 && <UpgradeIcon />}
+                {columns.meta !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle}>
-                <Typography variant="body" noWrap>
-                  Minimum
-                </Typography>
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle}>
-                <Typography variant="body" noWrap>
-                  Maximum
-                </Typography>
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("price")}>
-                <Typography variant="body" noWrap>
-                  Price
-                </Typography>
-                {columns.price === 1 && <UpgradeIcon />}
-                {columns.price !== 1 && <VerticalAlignBottomIcon />}
-              </Box>
-            </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((product) => (
+          {sortedData.map((logs) => (
             <TableRow
-              key={product.name}
+              key={logs.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="center" component="th" scope="row">
-                {product.id}
+                {logs.id}
               </TableCell>
-              <TableCell align="center">{"product.category"}</TableCell>
-              <TableCell align="center">{"product.brand"}</TableCell>
-              <TableCell align="center">{"product.name"}</TableCell>
-              <TableCell align="center">{"product.stock"}</TableCell>
-              <TableCell align="center">{"product.min"}</TableCell>
-              <TableCell align="center">{"product?.max"}</TableCell>
-              <TableCell align="center">${"product.price"}</TableCell>
-              <TableCell align="center">
-                <BorderColorIcon sx={btnHoverStyle} />
-                <DeleteForeverIcon sx={btnHoverStyle} />
-              </TableCell>
+              <TableCell align="center">{logs.timestamp}</TableCell>
+              <TableCell align="center">{logs.level}</TableCell>
+              <TableCell align="center">{logs.message}</TableCell>
+              <TableCell align="center">{JSON.stringify(logs.meta)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
