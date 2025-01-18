@@ -14,6 +14,7 @@ import MoreIcon from "@mui/icons-material/More";
 import { useRouter } from "next/router";
 import MenuListItem from "./MenuListItem";
 import { useSelector } from "react-redux";
+import NestedList from "./NestedList";
 
 const navigationItems = [
   {
@@ -48,11 +49,6 @@ const navigationItems = [
     url: "/ai",
   },
 ];
-const navigationAdmin = {
-  title: "Admin Panel",
-  icon: <AdminPanelSettingsIcon />,
-  url: "/admin",
-};
 
 const MenuList = () => {
   const { user } = useSelector((state) => state.auth);
@@ -62,9 +58,7 @@ const MenuList = () => {
         {navigationItems?.map((item) => (
           <MenuListItem key={item.url} navigationItem={item} />
         ))}
-        {user?.userRole === 1 && (
-          <MenuListItem navigationItem={navigationAdmin} />
-        )}{" "}
+        {user?.userRole === 1 && <NestedList />}{" "}
       </List>
     </div>
   );
