@@ -1,3 +1,5 @@
+##### TO START THE APPLICATION YOU ALSO NEED AN .ENV FILE (AVAILABLE ON REQUEST)!
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 Steps:
