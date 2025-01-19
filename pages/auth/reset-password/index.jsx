@@ -89,6 +89,7 @@ const ResetPassword = () => {
                 name="password"
                 id="password"
                 variant="outlined"
+                type="password"
                 value={inputVal?.password || ""}
                 onChange={handleChange}
               />
@@ -97,6 +98,7 @@ const ResetPassword = () => {
                 name="password2"
                 id="password2"
                 variant="outlined"
+                type="password"
                 value={inputVal?.password2 || ""}
                 onChange={handleChange}
                 helperText={errorMessage ? errorMessage : ""}
