@@ -16,21 +16,35 @@ import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import LogModal from "../modals/LogModal";
 
-const LogsTable = ({logs}) => {
+const LogsTable = ({ setOpen, setInfo, logs }) => {
   const columnObj = {
     id: 1,
     timestamp: 1,
     level: 1,
     message: 1,
-    meta: 1
+    meta: 1,
   };
 
   const { sortedData, handleSort, columns } = useSortColumn(logs, columnObj);
+  const formatDateTime = (date) => {
+    return `${new Date(date).toLocaleDateString("tr")}-
+    ${new Date(date).toLocaleTimeString("tr")}`;
+  };
+
+  const handleDoubleClick = (e, info) => {
+    if (e.detail > 1) {
+      setOpen(true);
+      setInfo(info);
+    }
+  };
+  const cutCellValue = (value) =>
+    value.length > 50 ? `${value.substring(0, 50)}...` : value;
 
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 350 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">
@@ -51,15 +65,7 @@ const LogsTable = ({logs}) => {
                 {columns.timestamp !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("level")}>
-                <Typography variant="body" noWrap>
-                  Level
-                </Typography>
-                {columns.level === 1 && <UpgradeIcon />}
-                {columns.level !== 1 && <VerticalAlignBottomIcon />}
-              </Box>
-            </TableCell>
+
             <TableCell align="center">
               <Box sx={arrowStyle} onClick={() => handleSort("message")}>
                 <Typography variant="body" noWrap>
@@ -78,21 +84,38 @@ const LogsTable = ({logs}) => {
                 {columns.meta !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
+            <TableCell align="center">
+              <Box sx={arrowStyle} onClick={() => handleSort("level")}>
+                <Typography variant="body" noWrap>
+                  Level
+                </Typography>
+                {columns.level === 1 && <UpgradeIcon />}
+                {columns.level !== 1 && <VerticalAlignBottomIcon />}
+              </Box>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((logs) => (
+          {sortedData.map((log) => (
             <TableRow
-              key={logs.id}
+              key={log.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              onClick={(e) => handleDoubleClick(e, log)}
             >
               <TableCell align="center" component="th" scope="row">
-                {logs.id}
+                {log.id}
               </TableCell>
-              <TableCell align="center">{logs.timestamp}</TableCell>
-              <TableCell align="center">{logs.level}</TableCell>
-              <TableCell align="center">{logs.message}</TableCell>
-              <TableCell align="center">{JSON.stringify(logs.meta)}</TableCell>
+              <TableCell align="center">
+                {formatDateTime(log.timestamp)}
+              </TableCell>
+              <TableCell align="center">
+                {/* {log.message.substring(0, 25)}... */}
+                {cutCellValue(log.message)}
+              </TableCell>
+              <TableCell align="center">
+                {cutCellValue(JSON.stringify(log.meta))}
+              </TableCell>
+              <TableCell align="center">{log.level}</TableCell>
             </TableRow>
           ))}
         </TableBody>

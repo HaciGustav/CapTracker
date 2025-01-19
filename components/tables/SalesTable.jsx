@@ -102,7 +102,6 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
                 {columns.price_total !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
 
@@ -124,19 +123,6 @@ const SalesTable = ({ setOpen, setInfo, selectedProducts, selectedBrands }) => {
                 <TableCell align="center">{item.quantity}</TableCell>
                 <TableCell align="center">{`$${item.price}`}</TableCell>
                 <TableCell align="center">{`$${item.price_total}`}</TableCell>
-                <TableCell>
-                  <Box sx={flex}>
-                    <BorderColorIcon
-                      sx={btnHoverStyle}
-                      onClick={() => {
-                        setOpen(true);
-                        setInfo(item);
-                      }}
-                    />
-
-                    <DeleteForeverIcon sx={btnHoverStyle} />
-                  </Box>
-                </TableCell>
               </TableRow>
             ))}
         </TableBody>

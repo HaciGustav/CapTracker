@@ -5,8 +5,9 @@ import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import ProductModal from "@/components/modals/ProductModal";
 import ProductsTable from "@/components/tables/ProductsTable";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import useStockCalls from "@/hooks/useStockCalls";
+import { isUserStaffBySession } from "@/helper/userRoleValidation";
 
 const Products = () => {
   const { getProducts } = useStockCalls();
@@ -15,6 +16,8 @@ const Products = () => {
   const [info, setInfo] = useState({});
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     getProducts();
@@ -33,16 +36,18 @@ const Products = () => {
       >
         Products
       </Typography>
-
-      <Button variant="contained" onClick={() => setOpen(true)}>
-        New Product
-      </Button>
+      {!isUserStaffBySession(session) && (
+        <Button variant="contained" onClick={() => setOpen(true)}>
+          New Product
+        </Button>
+      )}
 
       <ProductModal
         open={open}
         setOpen={setOpen}
         info={info}
         setInfo={setInfo}
+        allowSetTreshold={!isUserStaffBySession(session)}
       />
 
       {products?.length > 0 && (

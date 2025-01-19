@@ -6,13 +6,16 @@ import prisma from "@/server/db";
 import LogsTable from "@/components/tables/LogsTable";
 import { getSession } from "next-auth/react";
 import useAdminCalls from "@/hooks/useAdminCalls";
+import LogModal from "@/components/modals/LogModal";
 
-const Logs = ({logs}) => {
+const Logs = ({ logs }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: "100vw" }}>
+      <LogModal open={open} setOpen={setOpen} info={info} />
+
       <Typography
         variant="h4"
         color="error"
@@ -26,11 +29,7 @@ const Logs = ({logs}) => {
       </Typography>
 
       {logs?.length > 0 && (
-        <LogsTable
-          setOpen={setOpen}
-          setInfo={setInfo}
-          logs={logs}
-        />
+        <LogsTable setOpen={setOpen} setInfo={setInfo} logs={logs} />
       )}
     </Box>
   );

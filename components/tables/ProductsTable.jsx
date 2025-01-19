@@ -45,6 +45,12 @@ const ProductsTable = ({
   const isProductSelected = (item) =>
     selectedProducts.includes(item.name) || selectedProducts.length === 0;
 
+  const handleDoubleClick = (e, info) => {
+    if (e.detail < 2) return;
+    setInfo(info);
+    setOpen(true);
+  };
+
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -118,7 +124,6 @@ const ProductsTable = ({
                 {columns.price !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -128,7 +133,11 @@ const ProductsTable = ({
             .map((product) => (
               <TableRow
                 key={product.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  cursor: "pointer",
+                }}
+                onClick={(e) => handleDoubleClick(e, product)}
               >
                 <TableCell align="center" component="th" scope="row">
                   {product.id}
@@ -140,16 +149,6 @@ const ProductsTable = ({
                 <TableCell align="center">{product.min}</TableCell>
                 <TableCell align="center">{product?.max}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>
-                <TableCell align="center">
-                  <BorderColorIcon
-                    sx={btnHoverStyle}
-                    onClick={() => {
-                      setInfo(product);
-                      setOpen(true);
-                    }}
-                  />
-                  <DeleteForeverIcon sx={btnHoverStyle} />
-                </TableCell>
               </TableRow>
             ))}
         </TableBody>

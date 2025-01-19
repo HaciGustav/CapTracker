@@ -8,7 +8,13 @@ import { useSelector } from "react-redux";
 import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import useStockCalls from "@/hooks/useStockCalls";
 
-export default function ProductModal({ open, setOpen, info, setInfo }) {
+export default function ProductModal({
+  open,
+  setOpen,
+  info,
+  setInfo,
+  allowSetTreshold,
+}) {
   const { categories, brands } = useSelector((state) => state.stock);
 
   const { postProduct, putProduct, deleteProduct } = useStockCalls();
@@ -131,6 +137,7 @@ export default function ProductModal({ open, setOpen, info, setInfo }) {
               value={info?.min || ""}
               onChange={handleChange}
               fullWidth
+              disabled={!allowSetTreshold}
             />
             <TextField
               label="Maximum Stock"
@@ -142,6 +149,7 @@ export default function ProductModal({ open, setOpen, info, setInfo }) {
               value={info?.max || ""}
               onChange={handleChange}
               fullWidth
+              disabled={!allowSetTreshold}
             />
           </Box>
 
