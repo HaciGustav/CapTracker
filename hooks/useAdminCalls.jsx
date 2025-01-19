@@ -40,7 +40,7 @@ const useAdminCalls = () => {
   const deleteAdminData = async (url) => {
     try {
       const { data } = await axiosWithToken.delete(url);
-      toastSuccessNotify(data.message);
+      // toastSuccessNotify(data.message);
     } catch (error) {
       console.log(error);
       toastErrorNotify(`${error.response?.status} ${error.response?.data}`);
