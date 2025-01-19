@@ -13,6 +13,7 @@ import { flexColumn, modalStyle } from "@/styles/globalStyle";
 import { useRouter } from "next/router";
 import useStockCalls from "@/hooks/useStockCalls";
 import { transactionTypes } from "@/helper/enums";
+import { toastWarnNotify } from "@/helper/ToastNotify";
 
 export default function ModalPurchase({ open, setOpen, info, setInfo }) {
   const router = useRouter();
@@ -24,12 +25,26 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
     const { name, value } = e.target;
     setInfo({ ...info, [name]: Number(value) });
   };
+
+  const notifyOnTresholdExceeded = () => {
+    const submittedProduct = products?.find((p) => p.id === info?.productId);
+    const stockAfterTransaction = submittedProduct?.stock + info.quantity;
+    const isMaxTresholdExceeded = stockAfterTransaction > submittedProduct?.max;
+
+    if (isMaxTresholdExceeded) {
+      toastWarnNotify(`Maximum Treshold of the Product is exceeded after Transaction!
+          Current stock:${stockAfterTransaction}
+          Max Treshold: ${submittedProduct?.max}`);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     postTransaction({
       ...info,
       transaction_type: transactionTypes.PURCHASE,
     }).then(() => getPurchases());
+    notifyOnTresholdExceeded();
     setOpen(false);
     setInfo({});
   };
@@ -89,6 +104,7 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
               value={info?.productId || ""}
               onChange={handleChange}
               required
+              disabled={!info.brandId}
             >
               <MenuItem onClick={() => router.push("/products")}>
                 Add New Product

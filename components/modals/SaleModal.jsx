@@ -13,6 +13,7 @@ import { flexColumn, modalStyle } from "@/styles/globalStyle";
 import { useRouter } from "next/router";
 import useStockCalls from "@/hooks/useStockCalls";
 import { transactionTypes } from "@/helper/enums";
+import { toastWarnNotify } from "@/helper/ToastNotify";
 
 export default function ModalSale({ open, setOpen, info, setInfo }) {
   const { brands, products } = useSelector((state) => state.stock);
@@ -26,15 +27,28 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
     const { name, value } = e.target;
     setInfo({ ...info, [name]: Number(value) });
   };
+
+  const notifyOnTresholdExceeded = () => {
+    const submittedProduct = products?.find((p) => p.id === info?.productId);
+    const stockAfterTransaction = submittedProduct?.stock - info.quantity;
+    const isMinTresholdExceeded = stockAfterTransaction < submittedProduct?.min;
+    if (isMinTresholdExceeded) {
+      toastWarnNotify(`Minimum Treshold of the Product is exceeded after Transaction!
+        Current stock:${stockAfterTransaction}
+        Min Treshold: ${submittedProduct?.min}`);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(info);
     postTransaction({ ...info, transaction_type: transactionTypes.SALE }).then(
       () => getSales()
     );
+    notifyOnTresholdExceeded();
 
     setOpen(false);
   };
+  console.log(info);
   const filteredProducts = useMemo(
     () =>
       info.brandId
@@ -89,6 +103,7 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
               name="productId"
               value={info?.productId || ""}
               onChange={handleChange}
+              disabled={!info.brandId}
               required
             >
               <MenuItem onClick={() => router.push("/products")}>
