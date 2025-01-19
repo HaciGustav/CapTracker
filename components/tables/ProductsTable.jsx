@@ -134,7 +134,12 @@ const ProductsTable = ({ setOpen, setInfo }) => {
                 key={product.name}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
-                  cursor: "pointer",
+                  cursor: "pointer", ...(product.stock < product.min && {
+                    backgroundColor: "#ffcccc",
+                  }),
+                  ...(product.stock > product.max && {
+                    backgroundColor: "#ffffcc",
+                  })
                 }}
                 onClick={(e) => handleDoubleClick(e, product)}
               >

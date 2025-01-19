@@ -29,7 +29,7 @@ const Charts = () => {
     <Grid container justifyContent="center" spacing={2} mt={3}>
       <Grid item xs={12} sm={12} md={6}>
         <Card sx={{ p: 1, width: "100%", height: 350 }}>
-          <Typography>Daily Purchase (USD)</Typography>
+          <Typography>Sale History (USD)</Typography>
           <ResponsiveChartContainer
             series={[
               {
@@ -55,7 +55,7 @@ const Charts = () => {
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
         <Card sx={{ p: 1, width: "100%", height: 350 }}>
-          <Typography>Daily Purchase (USD)</Typography>
+          <Typography>Purchase History (USD)</Typography>
           <ResponsiveChartContainer
             series={[
               {
