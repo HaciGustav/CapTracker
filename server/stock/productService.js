@@ -97,11 +97,15 @@ export const createProduct = async (productInfo) => {
 export const updateProduct = async (productInfo) => {
   console.log(productInfo);
   try {
-    const { id, brand, category, ...restInfo } = productInfo;
+    const { id, brand, category, stock, min, max, price, ...restInfo } = productInfo;
     const updatedProduct = await prisma.product.update({
       where: { id: parseInt(productInfo.id) },
       data: {
         ...restInfo,
+        ...(stock ? { stock: parseInt(stock) } : {}),
+        ...(min ? { min: parseInt(min) } : {}),
+        ...(max ? { max: parseInt(max) } : {}),
+        ...(price ? { price: parseFloat(price).toFixed(2) } : {}),
       },
     });
     return updatedProduct;
