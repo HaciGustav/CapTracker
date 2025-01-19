@@ -48,7 +48,6 @@ export default function ModalSale({ open, setOpen, info, setInfo }) {
 
     setOpen(false);
   };
-  console.log(info);
   const filteredProducts = useMemo(
     () =>
       info.brandId

@@ -135,14 +135,7 @@ const Login = () => {
                 loadingPosition="center"
                 variant="contained"
                 onClick={handleResetPassword}
-                size="small"
                 color="secondary"
-                sx={{
-                  fontWeight: "400",
-                  textTransform: "capitalize",
-                  marginTop: "-10px",
-                  paddingBlock: "0",
-                }}
               >
                 Reset Password
               </LoadingButton>

@@ -39,7 +39,7 @@ export default function ModalUser({ open, setOpen, info, setInfo }) {
   };
 
   const handleDelete = () => {
-    deleteUser(info?.id);
+    deleteUser(info?.id).then(() => getUsers());
     setOpen(false);
   };
 

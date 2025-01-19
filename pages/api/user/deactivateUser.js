@@ -19,7 +19,7 @@ const handler = async (req, res) => {
 
       res.status(200).json({
         user,
-        message: `User: ${user.username} created successfully!`,
+        message: `User: ${user.username} deactivated successfully!`,
       });
     } catch (error) {
       logger

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import LogModal from "@/components/modals/LogModal";
 import { useSelector } from "react-redux";
 import LogsTable from "@/components/tables/LogsTable";
+import prisma from "@/server/db/index";
 const Logs = () => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});

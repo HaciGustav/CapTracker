@@ -187,8 +187,7 @@ export default function Layout({ window, children, toggleTheme }) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 1,
-          overflowX: "auto",
+          p: 3,
         }}
       >
         <Toolbar />

@@ -56,7 +56,6 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
         : products,
     [products, info?.brandId, info?.id]
   );
-  console.log(info);
   return (
     <Modal
       open={open}

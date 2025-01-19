@@ -48,7 +48,10 @@ export const createUser = async (userInfo) => {
           data: { is_active: true, password },
         });
       } else {
-        throw new AuthenticationError(400, "User does already exist!");
+        return await prisma.user.update({
+          where: { id: existingUser.id },
+          data: userInfo,
+        })
       }
     }
 

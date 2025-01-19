@@ -18,9 +18,9 @@ export default function BrandModal({ open, setOpen, info, setInfo }) {
     e.preventDefault();
     console.log(info);
     if (info?.id) {
-      putBrand(info);
+      putBrand(info).then(() => getBrands());
     } else {
-      postBrand(info);
+      postBrand(info).then(() => getBrands());
     }
 
     setOpen(false);

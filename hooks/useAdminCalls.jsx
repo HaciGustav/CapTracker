@@ -27,6 +27,7 @@ const useAdminCalls = () => {
   const postAdminData = async (info, url) => {
     try {
       const { data } = await axiosWithToken.post(`${url}`, info);
+      toastSuccessNotify(`Update performed successfully!`);
       dispatch(getSuccess({ data }));
     } catch (error) {
       dispatch(fetchFail());
@@ -40,7 +41,7 @@ const useAdminCalls = () => {
   const deleteAdminData = async (url) => {
     try {
       const { data } = await axiosWithToken.delete(url);
-      // toastSuccessNotify(data.message);
+      toastSuccessNotify(data.message);
     } catch (error) {
       console.log(error);
       toastErrorNotify(`${error.response?.status} ${error.response?.data}`);

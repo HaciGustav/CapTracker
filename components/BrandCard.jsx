@@ -9,7 +9,7 @@ import { btnHoverStyle, flex } from "../styles/globalStyle";
 import useStockCalls from "@/hooks/useStockCalls";
 
 const BrandCard = ({ brand, setOpen, setInfo }) => {
-  const { deleteBrand } = useStockCalls();
+  const { deleteBrand, getBrands } = useStockCalls();
   return (
     <Card
       elevation={10}
@@ -40,7 +40,7 @@ const BrandCard = ({ brand, setOpen, setInfo }) => {
         />
         <DeleteOutlineIcon
           sx={btnHoverStyle}
-          onClick={() => deleteBrand(brand.id)}
+          onClick={() => deleteBrand(brand.id).then(() => getBrands())}
         />
       </CardActions>
     </Card>
