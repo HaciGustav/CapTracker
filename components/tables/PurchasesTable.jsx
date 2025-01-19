@@ -19,8 +19,9 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle, flex } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
+import TransactionsFilter from "../filters/TransactionsFilter";
 
-const PurchasesTable = ({ setOpen, setInfo }) => {
+const PurchasesTable = () => {
   const { purchases } = useSelector((state) => state.stock);
 
   const columnObj = {
@@ -37,77 +38,26 @@ const PurchasesTable = ({ setOpen, setInfo }) => {
     purchases,
     columnObj
   );
+  const [filteredData, setFilteredData] = useState(sortedData);
 
-  // Filter states
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [minStock, setMinStock] = useState("");
-  const [maxStock, setMaxStock] = useState("");
-
-  const handleSearch = (event) =>
-    setSearchTerm(event.target.value.toLowerCase());
-  const handleCategoryChange = (event) =>
-    setSelectedCategory(event.target.value);
-  const handleMinStockChange = (event) => setMinStock(event.target.value);
-  const handleMaxStockChange = (event) => setMaxStock(event.target.value);
+  const categoriesForFilter = [
+    ...new Set(purchases.map((item) => item.category)),
+  ];
 
   const formatDateTime = (date) => {
-    return `${new Date(date).toLocaleDateString("tr")}-
-    ${new Date(date).toLocaleTimeString("tr")}`;
+    return `${new Date(date).toLocaleDateString("tr")}-${new Date(
+      date
+    ).toLocaleTimeString("tr")}`;
   };
-
-  const filteredData = sortedData
-
-    .filter(
-      (item) =>
-        item.product.toLowerCase().includes(searchTerm) ||
-        item.brand.toLowerCase().includes(searchTerm)
-    )
-    .filter((item) => !selectedCategory || item.category === selectedCategory)
-    .filter((item) => (minStock ? item.quantity >= Number(minStock) : true))
-    .filter((item) => (maxStock ? item.quantity <= Number(maxStock) : true));
 
   return (
     <Box>
-      {/* Filter Inputs */}
-      <Box sx={{ display: "flex", gap: 2, marginBlock: "10px" }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-          fullWidth
-        />
-        <Select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          displayEmpty
-          fullWidth
-        >
-          <MenuItem value="">All Categories</MenuItem>
-          {[...new Set(purchases.map((item) => item.category))].map(
-            (category) => (
-              <MenuItem key={category} value={category}>
-                {category}
-              </MenuItem>
-            )
-          )}
-        </Select>
-        <TextField
-          label="Min Stock"
-          type="number"
-          variant="outlined"
-          value={minStock}
-          onChange={handleMinStockChange}
-        />
-        <TextField
-          label="Max Stock"
-          type="number"
-          variant="outlined"
-          value={maxStock}
-          onChange={handleMaxStockChange}
-        />
-      </Box>
+      <TransactionsFilter
+        transactions={sortedData}
+        setFilteredData={setFilteredData}
+        categories={categoriesForFilter}
+      />
+
       <TableContainer component={Paper} elevation={10}>
         <Table>
           <TableHead>
@@ -177,7 +127,6 @@ const PurchasesTable = ({ setOpen, setInfo }) => {
                   {columns.price_total !== 1 && <VerticalAlignBottomIcon />}
                 </Box>
               </TableCell>
-              <TableCell align="center">Operation</TableCell>
             </TableRow>
           </TableHead>
 
@@ -190,26 +139,12 @@ const PurchasesTable = ({ setOpen, setInfo }) => {
                 <TableCell align="center">
                   {formatDateTime(item?.createdAt)}
                 </TableCell>
-                <TableCell align="center">{item?.category}</TableCell>
-                {/* <TableCell align="center">{"item.firm"}</TableCell> */}
-                <TableCell align="center">{item?.brand}</TableCell>
                 <TableCell align="center">{item?.product}</TableCell>
+                <TableCell align="center">{item?.brand}</TableCell>
+                <TableCell align="center">{item?.category}</TableCell>
                 <TableCell align="center">{item?.quantity}</TableCell>
                 <TableCell align="center">{`$${item?.price}`}</TableCell>
                 <TableCell align="center">{`$${item?.price_total}`}</TableCell>
-                <TableCell>
-                  <Box sx={flex}>
-                    <BorderColorIcon
-                      sx={btnHoverStyle}
-                      onClick={() => {
-                        setInfo(item);
-                        setOpen(true);
-                      }}
-                    />
-
-                    <DeleteForeverIcon sx={btnHoverStyle} />
-                  </Box>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>

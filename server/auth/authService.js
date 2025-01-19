@@ -4,6 +4,7 @@ import prisma from "../db";
 import AuthenticationError from "../utils/error/AuthenticationError";
 import jwtOptions from "@/config/jwt_options.json";
 import { sendEmail } from "../utils/email-service/email";
+import { throwErrorOnMissingField } from "../utils/validators";
 
 const JWT_SECRET = process.env.JWT_SECRET || "captracker";
 
@@ -29,22 +30,57 @@ export const getUserFromToken = (token) => {
   }
 };
 
+const activateUser = async (userInfo) => {
+  return await prisma.user.update({
+    where: { id: userInfo.id },
+    data: {
+      ...userInfo,
+      is_active: true,
+    },
+  });
+};
+
 export const register = async (credentials) => {
   const { username, email, password } = credentials;
+
+  const validatingFields = ["password", "email"];
+  throwErrorOnMissingField(validatingFields, credentials);
 
   const userByEmail = await userExistsByMail(email);
   const userByUsername = await userExistsByUsername(username);
 
+  const hashedPassword = await bcrypt.hash(password, 10);
   if (userByEmail) {
-    const message = `User already exists with given email: ${email} `;
-    throw new AuthenticationError(400, message);
+    if (userByEmail.is_active) {
+      throw new AuthenticationError(
+        400,
+        `User already exists with given email: ${email} `
+      );
+    } else {
+      const activatedUser = await activateUser({
+        ...userByEmail,
+        password: hashedPassword,
+      });
+      const token = generateToken(activatedUser);
+      return { user: activatedUser, token };
+    }
   }
 
   if (userByUsername) {
-    const message = `User already exists with given username: ${username}`;
-    throw new AuthenticationError(400, message);
+    if (userByUsername.is_active) {
+      throw new AuthenticationError(
+        400,
+        `User already exists with given username: ${username}`
+      );
+    } else {
+      const activatedUser = await activateUser({
+        ...userByUsername,
+        password: hashedPassword,
+      });
+      const token = generateToken(activatedUser);
+      return { user: activatedUser, token };
+    }
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
   try {
     const user = await prisma.user.create({
       data: {
@@ -56,13 +92,13 @@ export const register = async (credentials) => {
     const token = generateToken(user);
     return { user, token };
   } catch (error) {
-    throw new AuthenticationError(500, "F*ck You");
+    throw new AuthenticationError(500, "Something went wrong on the server!");
   }
 };
 
 export const login = async (email, password) => {
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { email, is_active: true },
   });
 
   if (!user) {
@@ -80,7 +116,9 @@ export const login = async (email, password) => {
 
 export const sendPasswordRecoveryEmail = async (email) => {
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email, is_active: true },
+    });
     if (!user) {
       throw new AuthenticationError(404, "User not found");
     }

@@ -187,15 +187,8 @@ export default function Layout({ window, children, toggleTheme }) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-
-          // width: {
-          //   sm: `calc(80% - ${drawerWidth}px)`,
-          //   // md: `calc(80% - ${drawerWidth}px)`,
-          //   // lg: `calc(80% - ${drawerWidth}px)`,
-          //   // xl: `calc(80% - ${drawerWidth}px)`,
-          // },
-          // width: `calc(100% - ${drawerWidth}px)`,
+          p: 1,
+          overflowX: "auto",
         }}
       >
         <Toolbar />

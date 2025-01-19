@@ -1,6 +1,8 @@
-class StockError extends Error {
+import BaseError from "./BaseError";
+
+class StockError extends BaseError {
   constructor(status, message) {
-    super(message);
+    super(status, message);
     this.type = "custom";
     this.name = "StockError";
     this.status = status;

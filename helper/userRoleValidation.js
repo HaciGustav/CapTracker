@@ -8,3 +8,8 @@ export const isUserManagerBySession = (session) => {
   const userRole = session?.user?.user?.user_role;
   return userRole === userRoleTypes.MANAGER;
 };
+
+export const isUserStaffBySession = (session) => {
+  const userRole = session?.user?.user?.user_role;
+  return userRole === userRoleTypes.STAFF;
+};

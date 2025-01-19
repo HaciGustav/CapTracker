@@ -1,6 +1,8 @@
-class AuthenticationError extends Error {
+import BaseError from "./BaseError";
+
+class AuthenticationError extends BaseError {
   constructor(status, message) {
-    super(message);
+    super(status, message);
     this.type = "custom";
 
     this.name = "AuthenticationError";

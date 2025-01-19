@@ -19,6 +19,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
+import TableFilter from "../filters/ProductsFilter";
 
 const ProductsTable = ({ setOpen, setInfo }) => {
   const { products } = useSelector((state) => state.stock);
@@ -36,71 +37,25 @@ const ProductsTable = ({ setOpen, setInfo }) => {
     products,
     columnObj
   );
+  const [filteredData, setFilteredData] = useState(sortedData);
 
-  // Filter states
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [minStock, setMinStock] = useState("");
-  const [maxStock, setMaxStock] = useState("");
+  const categoriesForFilter = [
+    ...new Set(products.map((item) => item.category)),
+  ];
 
-  const handleSearch = (event) =>
-    setSearchTerm(event.target.value.toLowerCase());
-  const handleCategoryChange = (event) =>
-    setSelectedCategory(event.target.value);
-  const handleMinStockChange = (event) => setMinStock(event.target.value);
-  const handleMaxStockChange = (event) => setMaxStock(event.target.value);
+  const handleDoubleClick = (e, info) => {
+    if (e.detail < 2) return;
+    setInfo(info);
+    setOpen(true);
+  };
 
-  const filteredData = sortedData
-
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.brand.toLowerCase().includes(searchTerm)
-    )
-    .filter((item) => !selectedCategory || item.category === selectedCategory)
-    .filter((item) => (minStock ? item.stock >= Number(minStock) : true))
-    .filter((item) => (maxStock ? item.stock <= Number(maxStock) : true));
   return (
     <Box>
-      {/* Filter Inputs */}
-      <Box sx={{ display: "flex", gap: 2, marginBlock: "10px" }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearch}
-          fullWidth
-        />
-        <Select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          displayEmpty
-          fullWidth
-        >
-          <MenuItem value="">All Categories</MenuItem>
-          {[...new Set(products.map((item) => item.category))].map(
-            (category) => (
-              <MenuItem key={category} value={category}>
-                {category}
-              </MenuItem>
-            )
-          )}
-        </Select>
-        <TextField
-          label="Min Stock"
-          type="number"
-          variant="outlined"
-          value={minStock}
-          onChange={handleMinStockChange}
-        />
-        <TextField
-          label="Max Stock"
-          type="number"
-          variant="outlined"
-          value={maxStock}
-          onChange={handleMaxStockChange}
-        />
-      </Box>
+      <TableFilter
+        products={sortedData}
+        setFilteredData={setFilteredData}
+        categories={categoriesForFilter}
+      />
 
       {/* Table */}
       <TableContainer component={Paper} elevation={10}>
@@ -171,35 +126,28 @@ const ProductsTable = ({ setOpen, setInfo }) => {
                   {columns.price !== 1 && <VerticalAlignBottomIcon />}
                 </Box>
               </TableCell>
-              <TableCell align="center">Operation</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredData.map((product) => (
               <TableRow
                 key={product.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  cursor: "pointer",
+                }}
+                onClick={(e) => handleDoubleClick(e, product)}
               >
                 <TableCell align="center" component="th" scope="row">
                   {product.id}
                 </TableCell>
-                <TableCell align="center">{product.category}</TableCell>
-                <TableCell align="center">{product.brand}</TableCell>
                 <TableCell align="center">{product.name}</TableCell>
+                <TableCell align="center">{product.brand}</TableCell>
+                <TableCell align="center">{product.category}</TableCell>
                 <TableCell align="center">{product.stock}</TableCell>
                 <TableCell align="center">{product.min}</TableCell>
                 <TableCell align="center">{product?.max}</TableCell>
                 <TableCell align="center">${product.price}</TableCell>
-                <TableCell align="center">
-                  <BorderColorIcon
-                    sx={btnHoverStyle}
-                    onClick={() => {
-                      setInfo(product);
-                      setOpen(true);
-                    }}
-                  />
-                  <DeleteForeverIcon sx={btnHoverStyle} />
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>

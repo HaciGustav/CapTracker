@@ -7,12 +7,14 @@ export const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 550,
+  width: { xs: 300, sm: 450, md: 550 },
+  maxHeight: "80vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: { xs: 1, sm: 2, md: 4 },
   borderRadius: "10px",
+  overflowY: "auto",
 };
 export const flexCenter = {
   display: "flex",
@@ -24,6 +26,7 @@ export const flexCenter = {
 
 export const flex = {
   display: "flex",
+  flexDirection: { xs: "column", sm: "row", md: "row" },
   justifyContent: "center",
   alignItems: "center",
   gap: 1,

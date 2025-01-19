@@ -16,19 +16,31 @@ import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import { Password } from "@mui/icons-material";
 
-const UsersTable = () => {
+const UsersTable = ({ setOpen, setInfo, users }) => {
   const columnObj = {
-    category: 1,
-    brand: 1,
-    name: 1,
-    stock: 1,
-    price: 1,
     id: 1,
+    firstname: 1,
+    lastname: 1,
+    username: 1,
+    email: 1,
+    user_role: 1,
+    is_active: 1,
+    createdAt: 1,
   };
 
-  const { sortedData, handleSort, columns } = useSortColumn([], columnObj);
-
+  const { sortedData, handleSort, columns } = useSortColumn(users, columnObj);
+  const formatDateTime = (date) => {
+    return `${new Date(date).toLocaleDateString("tr")}-
+    ${new Date(date).toLocaleTimeString("tr")}`;
+  };
+  const handleDoubleClick = (e, info) => {
+    if (e.detail > 1) {
+      setOpen(true);
+      setInfo(info);
+    }
+  };
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,86 +56,90 @@ const UsersTable = () => {
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("category")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("firstname")}>
                 <Typography variant="body" noWrap>
-                  Category
+                  Firstname
                 </Typography>
-                {columns.category === 1 && <UpgradeIcon />}
-                {columns.category !== 1 && <VerticalAlignBottomIcon />}
+                {columns.firstname === 1 && <UpgradeIcon />}
+                {columns.firstname !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("brand")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("lastname")}>
                 <Typography variant="body" noWrap>
-                  Brand
+                  Lastname
                 </Typography>
-                {columns.brand === 1 && <UpgradeIcon />}
-                {columns.brand !== 1 && <VerticalAlignBottomIcon />}
+                {columns.lastname === 1 && <UpgradeIcon />}
+                {columns.lastname !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("name")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("username")}>
                 <Typography variant="body" noWrap>
-                  Name
+                  Username
                 </Typography>
-                {columns.name === 1 && <UpgradeIcon />}
-                {columns.name !== 1 && <VerticalAlignBottomIcon />}
+                {columns.username === 1 && <UpgradeIcon />}
+                {columns.username !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("stock")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("email")}>
                 <Typography variant="body" noWrap>
-                  Stock
+                  E-Mail
                 </Typography>
-                {columns.stock === 1 && <UpgradeIcon />}
-                {columns.stock !== 1 && <VerticalAlignBottomIcon />}
+                {columns.email === 1 && <UpgradeIcon />}
+                {columns.email !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle}>
+              <Box sx={arrowStyle} onClick={() => handleSort("user_role")}>
                 <Typography variant="body" noWrap>
-                  Minimum
+                  Role
                 </Typography>
+                {columns.user_role === 1 && <UpgradeIcon />}
+                {columns.user_role !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle}>
+              <Box sx={arrowStyle} onClick={() => handleSort("is_active")}>
                 <Typography variant="body" noWrap>
-                  Maximum
+                  Active
                 </Typography>
+                {columns.is_active === 1 && <UpgradeIcon />}
+                {columns.is_active !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("price")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("createdAt")}>
                 <Typography variant="body" noWrap>
-                  Price
+                  Created At
                 </Typography>
-                {columns.price === 1 && <UpgradeIcon />}
-                {columns.price !== 1 && <VerticalAlignBottomIcon />}
+                {columns.createdAt === 1 && <UpgradeIcon />}
+                {columns.createdAt !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((product) => (
+          {sortedData.map((user) => (
             <TableRow
-              key={product.name}
+              key={user.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              onClick={(e) => handleDoubleClick(e, user)}
             >
               <TableCell align="center" component="th" scope="row">
-                {product.id}
+                {user.id}
               </TableCell>
-              <TableCell align="center">{"product.category"}</TableCell>
-              <TableCell align="center">{"product.brand"}</TableCell>
-              <TableCell align="center">{"product.name"}</TableCell>
-              <TableCell align="center">{"product.stock"}</TableCell>
-              <TableCell align="center">{"product.min"}</TableCell>
-              <TableCell align="center">{"product?.max"}</TableCell>
-              <TableCell align="center">${"product.price"}</TableCell>
+              <TableCell align="center">{user.firstname}</TableCell>
+              <TableCell align="center">{user.lastname}</TableCell>
+              <TableCell align="center">{user.username}</TableCell>
+              <TableCell align="center">{user.email}</TableCell>
+              <TableCell align="center">{user.user_role}</TableCell>
               <TableCell align="center">
-                <BorderColorIcon sx={btnHoverStyle} />
-                <DeleteForeverIcon sx={btnHoverStyle} />
+                {user.is_active ? "Active" : "Inactive"}
+              </TableCell>
+              <TableCell align="center">
+                {formatDateTime(user.createdAt)}
               </TableCell>
             </TableRow>
           ))}

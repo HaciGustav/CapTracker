@@ -16,22 +16,35 @@ import useSortColumn from "@/hooks/useSortColumn";
 import { arrowStyle, btnHoverStyle } from "@/styles/globalStyle";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import LogModal from "../modals/LogModal";
 
-const LogsTable = () => {
+const LogsTable = ({ setOpen, setInfo, logs }) => {
   const columnObj = {
-    category: 1,
-    brand: 1,
-    name: 1,
-    stock: 1,
-    price: 1,
     id: 1,
+    timestamp: 1,
+    level: 1,
+    message: 1,
+    meta: 1,
   };
 
-  const { sortedData, handleSort, columns } = useSortColumn([], columnObj);
+  const { sortedData, handleSort, columns } = useSortColumn(logs, columnObj);
+  const formatDateTime = (date) => {
+    return `${new Date(date).toLocaleDateString("tr")}-
+    ${new Date(date).toLocaleTimeString("tr")}`;
+  };
+
+  const handleDoubleClick = (e, info) => {
+    if (e.detail > 1) {
+      setOpen(true);
+      setInfo(info);
+    }
+  };
+  const cutCellValue = (value) =>
+    value.length > 50 ? `${value.substring(0, 50)}...` : value;
 
   return (
     <TableContainer component={Paper} sx={{ mt: 3 }} elevation={10}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 350 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">
@@ -44,87 +57,65 @@ const LogsTable = () => {
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("category")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("timestamp")}>
                 <Typography variant="body" noWrap>
-                  Category
+                  Timestamp
                 </Typography>
-                {columns.category === 1 && <UpgradeIcon />}
-                {columns.category !== 1 && <VerticalAlignBottomIcon />}
+                {columns.timestamp === 1 && <UpgradeIcon />}
+                {columns.timestamp !== 1 && <VerticalAlignBottomIcon />}
+              </Box>
+            </TableCell>
+
+            <TableCell align="center">
+              <Box sx={arrowStyle} onClick={() => handleSort("message")}>
+                <Typography variant="body" noWrap>
+                  Message
+                </Typography>
+                {columns.message === 1 && <UpgradeIcon />}
+                {columns.message !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("brand")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("meta")}>
                 <Typography variant="body" noWrap>
-                  Brand
+                  Meta
                 </Typography>
-                {columns.brand === 1 && <UpgradeIcon />}
-                {columns.brand !== 1 && <VerticalAlignBottomIcon />}
+                {columns.meta === 1 && <UpgradeIcon />}
+                {columns.meta !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
             <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("name")}>
+              <Box sx={arrowStyle} onClick={() => handleSort("level")}>
                 <Typography variant="body" noWrap>
-                  Name
+                  Level
                 </Typography>
-                {columns.name === 1 && <UpgradeIcon />}
-                {columns.name !== 1 && <VerticalAlignBottomIcon />}
+                {columns.level === 1 && <UpgradeIcon />}
+                {columns.level !== 1 && <VerticalAlignBottomIcon />}
               </Box>
             </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("stock")}>
-                <Typography variant="body" noWrap>
-                  Stock
-                </Typography>
-                {columns.stock === 1 && <UpgradeIcon />}
-                {columns.stock !== 1 && <VerticalAlignBottomIcon />}
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle}>
-                <Typography variant="body" noWrap>
-                  Minimum
-                </Typography>
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle}>
-                <Typography variant="body" noWrap>
-                  Maximum
-                </Typography>
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Box sx={arrowStyle} onClick={() => handleSort("price")}>
-                <Typography variant="body" noWrap>
-                  Price
-                </Typography>
-                {columns.price === 1 && <UpgradeIcon />}
-                {columns.price !== 1 && <VerticalAlignBottomIcon />}
-              </Box>
-            </TableCell>
-            <TableCell align="center">Operation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((product) => (
+          {sortedData.map((log) => (
             <TableRow
-              key={product.name}
+              key={log.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              onClick={(e) => handleDoubleClick(e, log)}
             >
               <TableCell align="center" component="th" scope="row">
-                {product.id}
+                {log.id}
               </TableCell>
-              <TableCell align="center">{"product.category"}</TableCell>
-              <TableCell align="center">{"product.brand"}</TableCell>
-              <TableCell align="center">{"product.name"}</TableCell>
-              <TableCell align="center">{"product.stock"}</TableCell>
-              <TableCell align="center">{"product.min"}</TableCell>
-              <TableCell align="center">{"product?.max"}</TableCell>
-              <TableCell align="center">${"product.price"}</TableCell>
               <TableCell align="center">
-                <BorderColorIcon sx={btnHoverStyle} />
-                <DeleteForeverIcon sx={btnHoverStyle} />
+                {formatDateTime(log.timestamp)}
               </TableCell>
+              <TableCell align="center">
+                {/* {log.message.substring(0, 25)}... */}
+                {cutCellValue(log.message)}
+              </TableCell>
+              <TableCell align="center">
+                {cutCellValue(JSON.stringify(log.meta))}
+              </TableCell>
+              <TableCell align="center">{log.level}</TableCell>
             </TableRow>
           ))}
         </TableBody>

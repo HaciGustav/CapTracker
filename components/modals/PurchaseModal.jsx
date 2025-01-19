@@ -17,11 +17,7 @@ import { transactionTypes } from "@/helper/enums";
 export default function ModalPurchase({ open, setOpen, info, setInfo }) {
   const router = useRouter();
   const { brands, products } = useSelector((state) => state.stock);
-  const { postTransaction } = useStockCalls();
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const { postTransaction, getPurchases } = useStockCalls();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -30,7 +26,10 @@ export default function ModalPurchase({ open, setOpen, info, setInfo }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    postTransaction({ ...info, transaction_type: transactionTypes.PURCHASE });
+    postTransaction({
+      ...info,
+      transaction_type: transactionTypes.PURCHASE,
+    }).then(() => getPurchases());
     setOpen(false);
     setInfo({});
   };

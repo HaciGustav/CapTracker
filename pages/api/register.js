@@ -11,8 +11,9 @@ const handler = async (req, res) => {
         .log("User registered!");
       res.status(200).json(user);
     } catch (error) {
+      console.log(error);
       logger
-        .meta({ type: "REGISTER", email })
+        .meta({ type: "REGISTER", email: req.body?.email })
         .error(error.status, error.message);
 
       res.status(error.status).json(error.message);
